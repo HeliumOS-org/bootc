@@ -4,6 +4,8 @@ COPY ./*.service /usr/lib/systemd/system/
 
 RUN dnf install -y epel-release && crb enable
 
+RUN dnf install -y git unzip vim
+
 RUN dnf install -y \
 	gdm \
 	bluez-cups cups-filters gutenprint-cups cups-pk-helper \
@@ -19,11 +21,15 @@ RUN dnf install -y --exclude PackageKit \
 	gnome-software gnome-terminal nautilus eog gedit gnome-calculator \
 	gnome-disk-utility gnome-initial-setup gnome-characters gnome-color-manager \
 	gnome-font-viewer gnome-screenshot gnome-system-monitor gnome-logs \
-	file-roller-nautilus
+	file-roller-nautilus gnome-tweaks firewall-config \
+	gnome-extensions-app gnome-shell-extension-pop-shell \
+	gnome-shell-extension-appindicator 
+
+RUN dnf install -y https://archives.fedoraproject.org/pub/archive/fedora/linux/releases/35/Everything/x86_64/os/Packages/g/gnome-shell-extension-gsconnect-47-2.fc35.x86_64.rpm
 
 RUN dnf remove -y gnome-tour centos-backgrounds
 
-RUN dnf install -y git vim distrobox chromium
+RUN dnf install -y distrobox chromium
 
 RUN plymouth-set-default-theme spinner && set -x; kver=$(cd /usr/lib/modules && echo *); dracut -vf /usr/lib/modules/$kver/initramfs.img $kver
 
@@ -63,5 +69,7 @@ RUN git clone https://codeberg.org/HeliumOS/wallpapers.git && \
 	cp ./*.jpg /usr/share/backgrounds/heliumos && \
 	cd .. && rm -rdf wallpapers
 
-COPY dconf /usr/share/dconf/heliumos/db
+COPY gschema_overrides/* /usr/share/glib-2.0/schemas/
+
+RUN glib-compile-schemas /usr/share/glib-2.0/schemas/
 

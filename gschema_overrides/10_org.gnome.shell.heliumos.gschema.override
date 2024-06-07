@@ -1,0 +1,3 @@
+[org.gnome.shell]
+enabled-extensions=['gsconnect@andyholmes.github.io', 'appindicatorsupport@rgcjonas.gmail.com', 'pop-shell@system76.com']
+
