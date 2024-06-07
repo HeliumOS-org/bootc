@@ -22,8 +22,7 @@ RUN dnf install -y --exclude PackageKit \
 	gnome-disk-utility gnome-initial-setup gnome-characters gnome-color-manager \
 	gnome-font-viewer gnome-screenshot gnome-system-monitor gnome-logs \
 	file-roller-nautilus gnome-tweaks firewall-config \
-	gnome-extensions-app gnome-shell-extension-pop-shell \
-	gnome-shell-extension-appindicator 
+	gnome-extensions-app gnome-shell-extension-appindicator 
 
 RUN dnf install -y https://archives.fedoraproject.org/pub/archive/fedora/linux/releases/35/Everything/x86_64/os/Packages/g/gnome-shell-extension-gsconnect-47-2.fc35.x86_64.rpm
 
