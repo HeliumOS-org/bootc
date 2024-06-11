@@ -7,7 +7,7 @@ RUN dnf install -y epel-release && crb enable
 RUN dnf install -y git unzip vim
 
 RUN dnf install -y \
-	gdm glibc-langpack-* \
+	gdm \
 	bluez-cups cups-filters gutenprint-cups cups-pk-helper \
 	hplip colord paps samba-client system-config-printer-udev \
 	cups-pdf enscript foomatic foomatic-db-ppds pnm2ppa splix \
