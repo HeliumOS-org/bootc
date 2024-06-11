@@ -1,36 +1,23 @@
 FROM quay.io/centos-bootc/centos-bootc:stream9
 
-COPY ./*.service /usr/lib/systemd/system/
 
 RUN dnf install -y epel-release && crb enable
 
-RUN dnf install -y git unzip vim
+RUN dnf install --exclude=rootfiles -y @Workstation
+
+RUN dnf remove -y \
+	PackageKit \
+	totem evolution firefox \
+	gnome-tour gnome-initial-setup	
 
 RUN dnf install -y \
-	gdm \
-	bluez-cups cups-filters gutenprint-cups cups-pk-helper \
-	hplip colord paps samba-client system-config-printer-udev \
-	cups-pdf enscript foomatic foomatic-db-ppds pnm2ppa splix \
-	NetworkManager-fortisslvpn-gnome NetworkManager-libreswan-gnome \
-	NetworkManager-openconnect-gnome NetworkManager-openvpn-gnome \
-	NetworkManager-pptp-gnome NetworkManager-l2tp-gnome \
-	xdg-desktop-portal-gnome fprintd-pam \
-	gvfs-client gvfs-smb gvfs-mtp gvfs-gphoto2 gvfs-goa gvfs-fuse 
-
-RUN dnf install -y --exclude PackageKit \
-	gnome-software gnome-terminal nautilus eog gedit gnome-calculator \
-	gnome-disk-utility gnome-initial-setup gnome-characters gnome-color-manager \
-	gnome-font-viewer gnome-screenshot gnome-system-monitor gnome-logs \
-	file-roller-nautilus gnome-tweaks firewall-config \
-	gnome-extensions-app gnome-shell-extension-appindicator 
+	gnome-tweaks gnome-extensions-app \
+	gnome-shell-extension-appindicator \
+	NetworkManager-openvpn-gnome
 
 RUN dnf install -y https://archives.fedoraproject.org/pub/archive/fedora/linux/releases/35/Everything/x86_64/os/Packages/g/gnome-shell-extension-gsconnect-47-2.fc35.x86_64.rpm
 
-RUN dnf remove -y gnome-tour centos-backgrounds
-
 RUN dnf install -y distrobox chromium
-
-RUN plymouth-set-default-theme spinner && set -x; kver=$(cd /usr/lib/modules && echo *); dracut -vf /usr/lib/modules/$kver/initramfs.img $kver
 
 RUN sed -i 's,REDHAT_SUPPORT_PRODUCT_VERSION="CentOS Stream",,g' /usr/lib/os-release && \
 	sed -i 's,REDHAT_SUPPORT_PRODUCT="Red Hat Enterprise Linux 9",,g' /usr/lib/os-release && \
@@ -71,4 +58,7 @@ RUN git clone https://codeberg.org/HeliumOS/wallpapers.git && \
 COPY gschema_overrides/* /usr/share/glib-2.0/schemas/
 
 RUN glib-compile-schemas /usr/share/glib-2.0/schemas/
+
+COPY ./*.service /usr/lib/systemd/system/
+
 
