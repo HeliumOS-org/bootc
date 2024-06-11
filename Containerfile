@@ -30,6 +30,8 @@ RUN dnf remove -y gnome-tour centos-backgrounds
 
 RUN dnf install -y distrobox chromium
 
+RUN plymouth-set-default-theme spinner && set -x; kver=$(cd /usr/lib/modules && echo *); dracut -vf /usr/lib/modules/$kver/initramfs.img $kver
+
 RUN sed -i 's,REDHAT_SUPPORT_PRODUCT_VERSION="CentOS Stream",,g' /usr/lib/os-release && \
 	sed -i 's,REDHAT_SUPPORT_PRODUCT="Red Hat Enterprise Linux 9",,g' /usr/lib/os-release && \
 	sed -i 's,https://issues.redhat.com/,https://bugs.heliumos.org/,g' /usr/lib/os-release && \
