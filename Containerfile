@@ -61,4 +61,6 @@ RUN glib-compile-schemas /usr/share/glib-2.0/schemas/
 
 COPY ./*.service /usr/lib/systemd/system/
 
+RUN sed -i 's,ExecStart=/usr/bin/bootc update --apply --quiet,ExecStart=/usr/bin/bootc update --quiet,g' /usr/lib/systemd/system/bootc-fetch-apply-updates.service
+
 
