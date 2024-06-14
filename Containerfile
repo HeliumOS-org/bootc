@@ -3,21 +3,21 @@ FROM quay.io/centos-bootc/centos-bootc:stream9
 
 RUN dnf install -y epel-release && crb enable
 
-RUN dnf install --exclude=rootfiles -y @Workstation
+RUN dnf install -y @fonts @GNOME @hardware-support @headless-management @multimedia @networkmanager-submodules @print-client 
 
 RUN dnf remove -y \
-	PackageKit \
+	PackageKit plymouth \
 	totem evolution firefox \
 	gnome-tour gnome-initial-setup	
 
 RUN dnf install -y \
 	gnome-tweaks gnome-extensions-app \
 	gnome-shell-extension-appindicator \
-	NetworkManager-openvpn-gnome
+	NetworkManager-openvpn-gnome 
 
 RUN dnf install -y https://archives.fedoraproject.org/pub/archive/fedora/linux/releases/35/Everything/x86_64/os/Packages/g/gnome-shell-extension-gsconnect-47-2.fc35.x86_64.rpm
 
-RUN dnf install -y distrobox chromium
+RUN dnf install -y distrobox chromium git
 
 RUN sed -i 's,REDHAT_SUPPORT_PRODUCT_VERSION="CentOS Stream",,g' /usr/lib/os-release && \
 	sed -i 's,REDHAT_SUPPORT_PRODUCT="Red Hat Enterprise Linux 9",,g' /usr/lib/os-release && \
