@@ -3,12 +3,15 @@ FROM quay.io/centos-bootc/centos-bootc:stream9
 
 RUN dnf install -y epel-release && crb enable
 
-RUN dnf install -y @fonts @GNOME @hardware-support @headless-management @multimedia @networkmanager-submodules @print-client 
+RUN dnf install -y --nobest \
+	--excludepkgs rootfiles,firefox,totem,Packagekit,gnome-tour,gnome-initial-setup \ 
+	@Workstation && rm -rdf /var/run
 
-RUN dnf remove -y \
-	PackageKit plymouth \
-	totem evolution firefox \
-	gnome-tour gnome-initial-setup	
+RUN dnf remove -y evolution plymouth setroubleshoot
+
+RUN wget -O /usr/lib/firewalld/zones/HeliumOS.xml \
+	https://web.archive.org/web/20240617200847if_/https://src.fedoraproject.org/rpms/firewalld/raw/90e646ef020a9c2e680a3f7c296e8ce1d4a5abc5/f/FedoraWorkstation.xml \
+	&& sed -i 's,DefaultZone=public,DefaultZone=HeliumOS,g' /etc/firewalld/firewalld.conf
 
 RUN dnf install -y \
 	gnome-tweaks gnome-extensions-app \
@@ -17,7 +20,7 @@ RUN dnf install -y \
 
 RUN dnf install -y https://archives.fedoraproject.org/pub/archive/fedora/linux/releases/35/Everything/x86_64/os/Packages/g/gnome-shell-extension-gsconnect-47-2.fc35.x86_64.rpm
 
-RUN dnf install -y distrobox chromium git
+RUN dnf install -y distrobox chromium git firewall-config
 
 RUN sed -i 's,REDHAT_SUPPORT_PRODUCT_VERSION="CentOS Stream",,g' /usr/lib/os-release && \
 	sed -i 's,REDHAT_SUPPORT_PRODUCT="Red Hat Enterprise Linux 9",,g' /usr/lib/os-release && \
