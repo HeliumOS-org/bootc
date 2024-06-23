@@ -1,7 +1,7 @@
 FROM quay.io/centos-bootc/centos-bootc:stream9
 
 
-RUN dnf install -y epel-release && crb enable
+RUN dnf install -y epel-release && dnf config-manager --set-enabled crb
 
 RUN dnf install -y --nobest \
 	--excludepkgs rootfiles,firefox,totem,Packagekit,gnome-tour,gnome-initial-setup \ 
