@@ -10,7 +10,7 @@ RUN dnf install -y --nobest \
 RUN dnf remove -y evolution plymouth setroubleshoot
 
 RUN wget -O /usr/lib/firewalld/zones/HeliumOS.xml \
-	https://web.archive.org/web/20240617200847if_/https://src.fedoraproject.org/rpms/firewalld/raw/90e646ef020a9c2e680a3f7c296e8ce1d4a5abc5/f/FedoraWorkstation.xml \
+	https://src.fedoraproject.org/rpms/firewalld/raw/90e646ef020a9c2e680a3f7c296e8ce1d4a5abc5/f/FedoraWorkstation.xml \
 	&& sed -i 's,DefaultZone=public,DefaultZone=HeliumOS,g' /etc/firewalld/firewalld.conf
 
 RUN dnf install -y \
