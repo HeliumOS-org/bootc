@@ -4,7 +4,7 @@ FROM quay.io/centos-bootc/centos-bootc:stream9
 RUN dnf install -y epel-release && dnf config-manager --set-enabled crb
 
 RUN dnf install -y --nobest \
-	--excludepkgs rootfiles,firefox,totem,Packagekit,gnome-tour,gnome-initial-setup \
+	--excludepkgs rootfiles,firefox,totem,Packagekit,gnome-tour,gnome-initial-setup,alsa-sof-firmware \
 	@Workstation && rm -rdf /var/run
 
 RUN dnf remove -y evolution plymouth setroubleshoot cockpit
