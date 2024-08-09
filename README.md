@@ -7,5 +7,5 @@
 Building version 9
 
 ```bash
-podman build -t localhost/heliumos-bootc:9 -f Containerfile.9
+podman build -t localhost/heliumos-bootc:9 -f 9/Containerfile .
 ```

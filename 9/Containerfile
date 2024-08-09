@@ -1,11 +1,14 @@
 FROM quay.io/almalinuxorg/almalinux-bootc:9.4
 
+WORKDIR /workdir
 
 RUN dnf install -y epel-release && dnf config-manager --set-enabled crb
 
 RUN dnf install -y --nobest \
 	--excludepkgs rootfiles,firefox,totem,Packagekit,gnome-tour,gnome-initial-setup,alsa-sof-firmware \
 	@Workstation && rm -rdf /var/run
+
+RUN systemctl enable gdm.service
 
 RUN dnf remove -y evolution plymouth setroubleshoot cockpit
 
@@ -23,6 +26,9 @@ RUN dnf install -y https://mirror.stream.centos.org/9-stream/AppStream/x86_64/os
 RUN dnf install -y https://archives.fedoraproject.org/pub/archive/fedora/linux/releases/35/Everything/x86_64/os/Packages/g/gnome-shell-extension-gsconnect-47-2.fc35.x86_64.rpm
 
 RUN dnf install -y distrobox chromium git firewall-config
+
+RUN mkdir -p /etc/flatpak/remotes.d && \
+    curl -o /etc/flatpak/remotes.d/flathub.flatpakrepo  https://dl.flathub.org/repo/flathub.flatpakrepo
 
 RUN sed -i 's,wiki.almalinux.org,heliumos.org/docs,g' /usr/lib/os-release && \
     sed -i 's,LOGO="fedora-logo-icon",LOGO="heliumos-logo-icon",g' /usr/lib/os-release && \
@@ -52,17 +58,21 @@ RUN git clone https://codeberg.org/HeliumOS/logo.git && \
 	ln -sf /usr/share/icons/hicolor/64x64/apps/heliumos-logo-icon.png /usr/share/pixmaps/fedora-logo-small.png && \
 	cd .. && rm -rdf logo
 
-RUN git clone https://codeberg.org/HeliumOS/wallpapers.git --depth=1 && \
-	cd wallpapers && \
-	mv desktop-backgrounds-default.xml /usr/share/gnome-background-properties/desktop-backgrounds-default.xml && \
-	mkdir -p /usr/share/backgrounds/heliumos && \
-	cp ./*.jpg /usr/share/backgrounds/heliumos && \
-	cd .. && rm -rdf wallpapers
+COPY wallpapers /workdir/wallpapers
 
-COPY gschema_overrides/* /usr/share/glib-2.0/schemas/
+RUN cp /workdir/wallpapers/desktop-backgrounds-default.xml /usr/share/gnome-background-properties/desktop-backgrounds-default.xml && \
+    mkdir -p /usr/share/backgrounds/heliumos && \
+    cp /workdir/wallpapers/*.jpg /usr/share/backgrounds/heliumos
+
+COPY 9/gschema_overrides/* /usr/share/glib-2.0/schemas/
 
 RUN glib-compile-schemas /usr/share/glib-2.0/schemas/
 
-COPY ./*.service /usr/lib/systemd/system/
+COPY 9/systemd_services /workdir/systemd_services
+
+RUN mkdir -p /usr/lib/systemd/system/ && \
+    cp /workdir/systemd_services/*.service /usr/lib/systemd/system/ | true
 
 RUN sed -i 's,ExecStart=/usr/bin/bootc update --apply --quiet,ExecStart=/usr/bin/bootc update --quiet,g' /usr/lib/systemd/system/bootc-fetch-apply-updates.service
+
+RUN rm -rdf /workdir
