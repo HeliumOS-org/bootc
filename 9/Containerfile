@@ -58,7 +58,10 @@ RUN git clone https://codeberg.org/HeliumOS/logo.git && \
 	ln -sf /usr/share/icons/hicolor/64x64/apps/heliumos-logo-icon.png /usr/share/pixmaps/fedora-logo-small.png && \
 	cd .. && rm -rdf logo
 
-COPY wallpapers /workdir/wallpapers
+
+RUN curl -o wallpapers.tar.gz https://codeberg.org/HeliumOS/wallpapers/archive/eccec97df37d4d5aee4f23e1e57b46c0e4e6c484.tar.gz && \
+    tar -xzf wallpapers.tar.gz && \
+    rm wallpapers.tar.gz
 
 RUN cp /workdir/wallpapers/desktop-backgrounds-default.xml /usr/share/gnome-background-properties/desktop-backgrounds-default.xml && \
     mkdir -p /usr/share/backgrounds/heliumos && \
@@ -68,7 +71,7 @@ COPY 9/gschema_overrides/* /usr/share/glib-2.0/schemas/
 
 RUN glib-compile-schemas /usr/share/glib-2.0/schemas/
 
-COPY 9/systemd_services /workdir/systemd_services
+# COPY 9/systemd_services /workdir/systemd_services
 
 RUN mkdir -p /usr/lib/systemd/system/ && \
     cp /workdir/systemd_services/*.service /usr/lib/systemd/system/ | true
