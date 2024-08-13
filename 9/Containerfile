@@ -1,4 +1,24 @@
+FROM quay.io/almalinuxorg/almalinux-bootc:9.4 as flatpak
+
+RUN dnf install -y python3.11 flatpak-builder
+
+COPY 9/flatpak-readonlyroot.toml flatpak.toml
+
+RUN mkdir /var/roothome && \
+    curl -O https://codeberg.org/HeliumOS/flatpak-readonlyroot/raw/tag/v0.1/flatpak-readonlyroot.py && \
+    python3.11 flatpak-readonlyroot.py flatpak.toml
+
+RUN curl -o bootc-gtk.flatpak https://codeberg.org/HeliumOS/bootc-gtk/releases/download/0.2/org.heliumos.bootc_gtk.flatpak && \
+    flatpak install \
+        -y \
+        --installation=installation \
+        bootc-gtk.flatpak
+
 FROM quay.io/almalinuxorg/almalinux-bootc:9.4
+
+COPY --from=flatpak /usr/lib/flatpak-readonlyroot /usr/lib/flatpak-readonlyroot
+COPY --from=flatpak /etc/flatpak/installations.d /etc/flatpak/installations.d
+COPY --from=flatpak /etc/profile.d /etc/profile.d
 
 WORKDIR /workdir
 
@@ -57,7 +77,6 @@ RUN git clone https://codeberg.org/HeliumOS/logo.git && \
 	ln -sf /usr/share/icons/hicolor/64x64/apps/heliumos-logo-icon.png /usr/share/pixmaps/fedora-gdm-logo.png && \
 	ln -sf /usr/share/icons/hicolor/64x64/apps/heliumos-logo-icon.png /usr/share/pixmaps/fedora-logo-small.png && \
 	cd .. && rm -rdf logo
-
 
 RUN curl -o wallpapers.tar.gz https://codeberg.org/HeliumOS/wallpapers/archive/eccec97df37d4d5aee4f23e1e57b46c0e4e6c484.tar.gz && \
     tar -xzf wallpapers.tar.gz && \

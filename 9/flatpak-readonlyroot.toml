@@ -1,0 +1,3 @@
+[[remotes]]
+name = "flathub" # Required
+url = "https://dl.flathub.org/repo/flathub.flatpakrepo"
