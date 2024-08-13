@@ -30,7 +30,7 @@ RUN dnf install -y --nobest \
 
 RUN systemctl enable gdm.service
 
-RUN dnf remove -y evolution plymouth setroubleshoot cockpit
+RUN dnf remove -y evolution setroubleshoot cockpit
 
 RUN wget -O /usr/lib/firewalld/zones/HeliumOS.xml \
 	https://src.fedoraproject.org/rpms/firewalld/raw/90e646ef020a9c2e680a3f7c296e8ce1d4a5abc5/f/FedoraWorkstation.xml \
@@ -98,3 +98,11 @@ RUN mkdir -p /usr/lib/systemd/system/ && \
 RUN sed -i 's,ExecStart=/usr/bin/bootc update --apply --quiet,ExecStart=/usr/bin/bootc update --quiet,g' /usr/lib/systemd/system/bootc-fetch-apply-updates.service
 
 RUN rm -rdf /workdir
+
+COPY 9/kargs/10-heliumos.toml /usr/lib/bootc/kargs.d/10-heliumos.toml
+
+COPY 9/dracut/10-heliumos.conf /usr/lib/dracut/dracut.conf.d/10-heliumos.conf
+
+RUN set -x; \
+    kver=$(cd /usr/lib/modules && echo * | awk '{print $1}'); \
+    dracut -vf /usr/lib/modules/$kver/initramfs.img $kver
