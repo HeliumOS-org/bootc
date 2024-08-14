@@ -22,11 +22,14 @@ COPY --from=flatpak /etc/profile.d /etc/profile.d
 
 WORKDIR /workdir
 
-RUN dnf install -y epel-release && dnf config-manager --set-enabled crb
+RUN dnf install -y epel-release && \
+    dnf config-manager --set-enabled crb && \
+    dnf config-manager --save \
+        --setopt=exclude=PackageKit,PackageKit-command-not-found,rootfiles,firefox,totem,gnome-tour,gnome-initial-setup-alsa-sof-firmware
 
 RUN dnf install -y --nobest \
-	--excludepkgs rootfiles,firefox,totem,Packagekit,gnome-tour,gnome-initial-setup,alsa-sof-firmware \
-	@Workstation && rm -rdf /var/run
+	   @Workstation && \
+	rm -rdf /var/run
 
 RUN systemctl enable gdm.service
 
