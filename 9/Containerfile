@@ -1,20 +1,13 @@
 FROM quay.io/almalinuxorg/almalinux-bootc:9.4 as flatpak
 
-RUN dnf install -y python3.11 flatpak-builder
 
 COPY 9/flatpak-readonlyroot.toml flatpak.toml
+COPY 9/flatpak.sh flatpak.sh
+RUN ./flatpak.sh && rm flatpak.sh
 
-RUN mkdir /var/roothome && \
-    curl -O https://codeberg.org/HeliumOS/flatpak-readonlyroot/raw/tag/v0.1/flatpak-readonlyroot.py && \
-    python3.11 flatpak-readonlyroot.py flatpak.toml
-
-RUN curl -o bootc-gtk.flatpak https://codeberg.org/HeliumOS/bootc-gtk/releases/download/0.2/org.heliumos.bootc_gtk.flatpak && \
-    flatpak install \
-        -y \
-        --installation=installation \
-        bootc-gtk.flatpak
 
 FROM quay.io/almalinuxorg/almalinux-bootc:9.4
+
 
 COPY --from=flatpak /usr/lib/flatpak-readonlyroot /usr/lib/flatpak-readonlyroot
 COPY --from=flatpak /etc/flatpak/installations.d /etc/flatpak/installations.d
@@ -22,90 +15,29 @@ COPY --from=flatpak /etc/profile.d /etc/profile.d
 
 WORKDIR /workdir
 
-RUN dnf install -y epel-release && \
-    dnf config-manager --set-enabled crb && \
-    dnf config-manager --save \
-        --setopt=exclude=PackageKit,PackageKit-command-not-found,rootfiles,firefox,totem,gnome-tour,gnome-initial-setup-alsa-sof-firmware
-
-RUN dnf install -y --nobest \
-	   @Workstation && \
-	rm -rdf /var/run
-
-RUN systemctl enable gdm.service
-
-RUN dnf remove -y evolution setroubleshoot cockpit
-
-RUN wget -O /usr/lib/firewalld/zones/HeliumOS.xml \
-	https://src.fedoraproject.org/rpms/firewalld/raw/90e646ef020a9c2e680a3f7c296e8ce1d4a5abc5/f/FedoraWorkstation.xml \
-	&& sed -i 's,DefaultZone=public,DefaultZone=HeliumOS,g' /etc/firewalld/firewalld.conf
-
-RUN dnf install -y \
-	gnome-tweaks gnome-extensions-app \
-	gnome-shell-extension-appindicator \
-	NetworkManager-openvpn-gnome
-
-RUN dnf install -y https://mirror.stream.centos.org/9-stream/AppStream/x86_64/os/Packages/gnome-software-45.3-1.el9.x86_64.rpm
-
-RUN dnf install -y https://archives.fedoraproject.org/pub/archive/fedora/linux/releases/35/Everything/x86_64/os/Packages/g/gnome-shell-extension-gsconnect-47-2.fc35.x86_64.rpm
-
-RUN dnf install -y distrobox chromium git firewall-config
-
-RUN mkdir -p /etc/flatpak/remotes.d && \
-    curl -o /etc/flatpak/remotes.d/flathub.flatpakrepo  https://dl.flathub.org/repo/flathub.flatpakrepo
-
-RUN sed -i 's,wiki.almalinux.org,heliumos.org/docs,g' /usr/lib/os-release && \
-    sed -i 's,LOGO="fedora-logo-icon",LOGO="heliumos-logo-icon",g' /usr/lib/os-release && \
-    sed -i 's,ID="almalinux",ID="heliumos",g' /usr/lib/os-release && \
-    sed -i 's,ALMALINUX_MANTISBT_PROJECT="AlmaLinux-9",,g' /usr/lib/os-release && \
-    sed -i 's,ALMALINUX_MANTISBT_PROJECT_VERSION="9.4",,g' /usr/lib/os-release && \
-    sed -i 's,Seafoam Ocelot,Fire Cypress,g' /usr/lib/os-release && \
-    sed -i 's,AlmaLinux,HeliumOS,g' /usr/lib/os-release && \
-    sed -i 's,almalinux,heliumos,g' /usr/lib/os-release && \
-    sed -i 's,ID_LIKE="rhel centos fedora",ID_LIKE="rhel centos fedora almalinux",g' /usr/lib/os-release
-
-RUN git clone https://codeberg.org/HeliumOS/logo.git && \
-	cd logo && \
-	git checkout 0ce8b5cd8f && \
-	mv export/logo/logo-color.svg /usr/share/icons/hicolor/scalable/apps/heliumos-logo-icon.svg && \
-	mv export/logo/logo.svg /usr/share/icons/hicolor/scalable/apps/heliumos-logo-icon-white.svg && \
-	mv export/logo/logo-color-256x256.png /usr/share/icons/hicolor/256x256/apps/heliumos-logo-icon.png && \
-	mv export/logo/logo-color-64x64.png /usr/share/icons/hicolor/64x64/apps/heliumos-logo-icon.png && \
-	ln -sf /usr/share/icons/hicolor/scalable/apps/heliumos-logo-icon.svg /usr/share/icons/hicolor/scalable/apps/start-here.svg && \
-	ln -sf /usr/share/icons/hicolor/scalable/apps/heliumos-logo-icon.svg /usr/share/icons/hicolor/scalable/apps/xfce4_xicon1.svg && \
-	ln -sf /usr/share/icons/hicolor/scalable/apps/heliumos-logo-icon.svg /usr/share/almalinux-logos/fedora_logo.svg && \
-	ln -sf /usr/share/icons/hicolor/scalable/apps/heliumos-logo-icon-white.svg /usr/share/almalinux-logos/fedora_logo_darkbackground.svg && \
-	ln -sf /usr/share/icons/hicolor/scalable/apps/heliumos-logo-icon.svg /usr/share/pixmaps/fedora-logo-sprite.svg && \
-	ln -sf /usr/share/icons/hicolor/256x256/apps/heliumos-logo-icon.png /usr/share/pixmaps/fedora-logo-sprite.png && \
-	ln -sf /usr/share/icons/hicolor/256x256/apps/heliumos-logo-icon.png /usr/share/pixmaps/fedora-logo.png && \
-	ln -sf /usr/share/icons/hicolor/64x64/apps/heliumos-logo-icon.png /usr/share/pixmaps/fedora-gdm-logo.png && \
-	ln -sf /usr/share/icons/hicolor/64x64/apps/heliumos-logo-icon.png /usr/share/pixmaps/fedora-logo-small.png && \
-	cd .. && rm -rdf logo
-
-RUN curl -o wallpapers.tar.gz https://codeberg.org/HeliumOS/wallpapers/archive/eccec97df37d4d5aee4f23e1e57b46c0e4e6c484.tar.gz && \
-    tar -xzf wallpapers.tar.gz && \
-    rm wallpapers.tar.gz
-
-RUN cp /workdir/wallpapers/desktop-backgrounds-default.xml /usr/share/gnome-background-properties/desktop-backgrounds-default.xml && \
-    mkdir -p /usr/share/backgrounds/heliumos && \
-    cp /workdir/wallpapers/*.jpg /usr/share/backgrounds/heliumos
+COPY 9/repos.sh repos.sh
+RUN ./repos.sh && rm repos.sh
 
 COPY 9/gschema_overrides/* /usr/share/glib-2.0/schemas/
+COPY 9/desktop.sh desktop.sh
+RUN ./desktop.sh && rm desktop.sh
 
-RUN glib-compile-schemas /usr/share/glib-2.0/schemas/
+COPY 9/apps.sh apps.sh
+RUN ./apps.sh && rm apps.sh
+
+COPY 9/branding.sh branding.sh
+RUN ./branding.sh && rm branding.sh
 
 # COPY 9/systemd_services /workdir/systemd_services
+COPY 9/systemd.sh systemd.sh
+RUN ./systemd.sh && rm systemd.sh
 
-RUN mkdir -p /usr/lib/systemd/system/ && \
-    cp /workdir/systemd_services/*.service /usr/lib/systemd/system/ | true
-
-RUN sed -i 's,ExecStart=/usr/bin/bootc update --apply --quiet,ExecStart=/usr/bin/bootc update --quiet,g' /usr/lib/systemd/system/bootc-fetch-apply-updates.service
-
-RUN rm -rdf /workdir
+COPY 9/bootc.sh bootc.sh
+RUN ./bootc.sh && rm bootc.sh
 
 COPY 9/kargs/10-heliumos.toml /usr/lib/bootc/kargs.d/10-heliumos.toml
-
 COPY 9/dracut/10-heliumos.conf /usr/lib/dracut/dracut.conf.d/10-heliumos.conf
+COPY 9/kernel.sh kernel.sh
+RUN ./kernel.sh && rm kernel.sh
 
-RUN set -x; \
-    kver=$(cd /usr/lib/modules && echo * | awk '{print $1}'); \
-    dracut -vf /usr/lib/modules/$kver/initramfs.img $kver
+RUN rm -rdf /workdir
