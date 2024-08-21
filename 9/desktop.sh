@@ -25,6 +25,7 @@ dnf install -y \
 
 dnf remove -y \
     evolution \
+    totem \
     setroubleshoot \
     cockpit \
 
