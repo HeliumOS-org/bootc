@@ -6,5 +6,4 @@ set -e
 
 dnf install -y \
     distrobox \
-    chromium \
     git
