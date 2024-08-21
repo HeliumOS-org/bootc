@@ -9,7 +9,7 @@ dnf install -y --nobest \
 
 
 dnf install -y \
-    https://mirror.stream.centos.org/9-stream/AppStream/x86_64/os/Packages/gnome-software-45.3-1.el9.x86_64.rpm
+    https://mirror.stream.centos.org/9-stream/AppStream/x86_64/os/Packages/gnome-software-45.3-3.el9.x86_64.rpm
 
 
 dnf install -y \
