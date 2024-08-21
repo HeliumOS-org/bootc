@@ -1,19 +1,10 @@
-FROM quay.io/almalinuxorg/almalinux-bootc:9.4 as flatpak
+FROM quay.io/almalinuxorg/almalinux-bootc:9.4
 
+WORKDIR /workdir
 
 COPY 9/flatpak-readonlyroot.toml flatpak.toml
 COPY 9/flatpak.sh flatpak.sh
 RUN ./flatpak.sh && rm flatpak.sh
-
-
-FROM quay.io/almalinuxorg/almalinux-bootc:9.4
-
-
-COPY --from=flatpak /usr/lib/flatpak-readonlyroot /usr/lib/flatpak-readonlyroot
-COPY --from=flatpak /etc/flatpak/installations.d /etc/flatpak/installations.d
-COPY --from=flatpak /etc/profile.d /etc/profile.d
-
-WORKDIR /workdir
 
 COPY 9/repos.sh repos.sh
 RUN ./repos.sh && rm repos.sh

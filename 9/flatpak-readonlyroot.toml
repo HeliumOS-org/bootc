@@ -1,3 +1,6 @@
 [[remotes]]
-name = "flathub" # Required
+name = "flathub"
 url = "https://dl.flathub.org/repo/flathub.flatpakrepo"
+
+[[packages]]
+bundle_url = "https://codeberg.org/HeliumOS/bootc-gtk/releases/download/0.2/org.heliumos.bootc_gtk.flatpak"
