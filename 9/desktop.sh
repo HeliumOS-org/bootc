@@ -23,6 +23,10 @@ dnf install -y \
     https://archives.fedoraproject.org/pub/archive/fedora/linux/releases/35/Everything/x86_64/os/Packages/g/gnome-shell-extension-gsconnect-47-2.fc35.x86_64.rpm
 
 
+dnf install -y \
+    gnome-backgrounds-extras
+
+
 dnf remove -y \
     evolution \
     totem \
