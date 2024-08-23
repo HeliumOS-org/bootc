@@ -1,0 +1,34 @@
+FROM quay.io/almalinuxorg/almalinux-bootc:9.4
+
+WORKDIR /workdir
+
+COPY 9/flatpak-readonlyroot.toml flatpak.toml
+COPY 9/flatpak.sh flatpak.sh
+RUN ./flatpak.sh && rm flatpak.sh
+
+COPY 9/repos.sh repos.sh
+RUN ./repos.sh && rm repos.sh
+
+COPY 9/gschema_overrides/* /usr/share/glib-2.0/schemas/
+COPY 9/desktop.sh desktop.sh
+RUN ./desktop.sh && rm desktop.sh
+
+COPY 9/apps.sh apps.sh
+RUN ./apps.sh && rm apps.sh
+
+COPY 9/branding.sh branding.sh
+RUN ./branding.sh && rm branding.sh
+
+# COPY 9/systemd_services /workdir/systemd_services
+COPY 9/systemd.sh systemd.sh
+RUN ./systemd.sh && rm systemd.sh
+
+COPY 9/bootc.sh bootc.sh
+RUN ./bootc.sh && rm bootc.sh
+
+COPY 9/kargs/10-heliumos.toml /usr/lib/bootc/kargs.d/10-heliumos.toml
+COPY 9/dracut/10-heliumos.conf /usr/lib/dracut/dracut.conf.d/10-heliumos.conf
+COPY 9/kernel-edge.sh kernel.sh
+RUN ./kernel.sh && rm kernel.sh
+
+RUN rm -rdf /workdir

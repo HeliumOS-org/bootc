@@ -9,3 +9,9 @@ Building version 9
 ```bash
 podman build -t localhost/heliumos-bootc:9 -f 9/Containerfile .
 ```
+
+Building version 9-edge
+
+```bash
+podman build -t localhost/heliumos-bootc:9-edge -f 9/Containerfile.edge .
+```

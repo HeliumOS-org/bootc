@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
 
-set -x
+set -e
 
 
 kver=$(cd /usr/lib/modules && echo * | awk '{print $1}')
