@@ -43,7 +43,7 @@ jobs:
           REGISTRY_IMAGE: ${{ vars.registry_image }}
           REGISTRY_USER: ${{ secrets.registry_user }}
           REGISTRY_PASS: ${{ secrets.registry_pass }}
-          REGISTRY: ${{ env.registry }}
+          REGISTRY: ${{ vars.registry }}
         run: |
           podman login --username $REGISTRY_USER --password $REGISTRY_PASS $REGISTRY
 
