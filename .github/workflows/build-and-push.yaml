@@ -3,22 +3,18 @@ name: Build and Push image
 on:
   workflow_call:
     inputs:
-      version:
-        description: "The EL version: 9, (10 soon), etc."
-        required: true
-        type: string
       is_canary:
         description: "Whether this is a canary release"
-        required: true
-        type: boolean
-      variant:
-        description: "The system variant: \"\", edge, etc."
         required: true
         type: boolean
 
 jobs:
    build_and_push:
     runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        version: [9]
+        variant: ["", "edge"]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -29,8 +25,8 @@ jobs:
 
       - name: Build image
         env:
-          VERSION: ${{ inputs.version }}
-          VARIANT: ${{ inputs.variant }}
+          VERSION: ${{ matrix.version }}
+          VARIANT: ${{ matrix.variant }}
         run: |
           if [[ $VARIANT == "" ]]; then
             export CONTAINERFILE=$VERSION/Containerfile
@@ -50,8 +46,8 @@ jobs:
       - name: Push to registry
         env:
           REGISTRY_URI: ${{ secrets.registry_uri }}
-          VERSION: ${{ inputs.version }}
-          VARIANT: ${{ inputs.variant }}
+          VERSION: ${{ matrix.version }}
+          VARIANT: ${{ matrix.variant }}
         run: |
           if [[ $IS_CANARY ]]; then
             export VERSION=$VERSION-canary
