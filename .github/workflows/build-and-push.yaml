@@ -27,7 +27,7 @@ jobs:
 
       - name: Build image
         env:
-          REGISTRY_IMAGE: ${{ env.registry_image }}
+          REGISTRY_IMAGE: ${{ vars.registry_image }}
           VERSION: ${{ matrix.version }}
           VARIANT: ${{ matrix.variant }}
         run: |
@@ -40,7 +40,7 @@ jobs:
 
       - name: Login to registry
         env:
-          REGISTRY_IMAGE: ${{ env.registry_image }}
+          REGISTRY_IMAGE: ${{ vars.registry_image }}
           REGISTRY_USER: ${{ secrets.registry_user }}
           REGISTRY_PASS: ${{ secrets.registry_pass }}
           REGISTRY: ${{ env.registry }}
@@ -49,8 +49,8 @@ jobs:
 
       - name: Push to registry
         env:
-          REGISTRY_IMAGE: ${{ env.registry_image }}
-          REGISTRY: ${{ env.registry }}
+          REGISTRY_IMAGE: ${{ vars.registry_image }}
+          REGISTRY: ${{ vars.registry }}
           VERSION: ${{ matrix.version }}
           VARIANT: ${{ matrix.variant }}
         run: |
