@@ -27,7 +27,7 @@ jobs:
 
       - name: Build image
         env:
-          REGISTRY_IMAGE: ${{ secrets.registry_image }}
+          REGISTRY_IMAGE: ${{ env.registry_image }}
           VERSION: ${{ matrix.version }}
           VARIANT: ${{ matrix.variant }}
         run: |
@@ -40,17 +40,17 @@ jobs:
 
       - name: Login to registry
         env:
-          REGISTRY_IMAGE: ${{ secrets.registry_image }}
+          REGISTRY_IMAGE: ${{ env.registry_image }}
           REGISTRY_USER: ${{ secrets.registry_user }}
           REGISTRY_PASS: ${{ secrets.registry_pass }}
-          REGISTRY: ${{ secrets.registry }}
+          REGISTRY: ${{ env.registry }}
         run: |
           podman login --username $REGISTRY_USER --password $REGISTRY_PASS $REGISTRY
 
       - name: Push to registry
         env:
-          REGISTRY_IMAGE: ${{ secrets.registry_image }}
-          REGISTRY_URI: ${{ secrets.registry_uri }}
+          REGISTRY_IMAGE: ${{ env.registry_image }}
+          REGISTRY: ${{ env.registry }}
           VERSION: ${{ matrix.version }}
           VARIANT: ${{ matrix.variant }}
         run: |
