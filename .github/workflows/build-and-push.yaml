@@ -27,6 +27,7 @@ jobs:
 
       - name: Build image
         env:
+          REGISTRY_IMAGE: ${{ secrets.registry_image }}
           VERSION: ${{ matrix.version }}
           VARIANT: ${{ matrix.variant }}
         run: |
@@ -35,18 +36,20 @@ jobs:
           else
             export CONTAINERFILE=$VERSION/Containerfile.$VARIANT
           fi 
-          podman build -t localhost/heliumos-bootc -f $CONTAINERFILE .
+          podman build -t REGISTRY_IMAGE -f $CONTAINERFILE .
 
       - name: Login to registry
         env:
+          REGISTRY_IMAGE: ${{ secrets.registry_image }}
           REGISTRY_USER: ${{ secrets.registry_user }}
           REGISTRY_PASS: ${{ secrets.registry_pass }}
-          REGISTRY_URI: ${{ secrets.registry_uri }}
+          REGISTRY: ${{ secrets.registry }}
         run: |
-          podman login --username $REGISTRY_USER --password $REGISTRY_PASS $REGISTRY_URI
+          podman login --username $REGISTRY_USER --password $REGISTRY_PASS $REGISTRY
 
       - name: Push to registry
         env:
+          REGISTRY_IMAGE: ${{ secrets.registry_image }}
           REGISTRY_URI: ${{ secrets.registry_uri }}
           VERSION: ${{ matrix.version }}
           VARIANT: ${{ matrix.variant }}
@@ -60,5 +63,5 @@ jobs:
           else
             export TAG=$VERSION-$VARIANT
           fi
-          podman push localhost/heliumos-bootc $REGISTRY_URI:$TAG
+          podman push $REGISTRY_IMAGE $REGISTRY/$REGISTRY_IMAGE
  
