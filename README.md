@@ -2,6 +2,10 @@
 
 [![OCI Repository](https://quay.io/repository/heliumos/bootc/status "OCI Repository")](https://quay.io/repository/heliumos/bootc)
 
+[![HeliumOS Stable Release](https://github.com/HeliumOS-org/bootc/actions/workflows/release-stable.yaml/badge.svg?branch=release)](https://github.com/HeliumOS-org/bootc/actions/workflows/release-stable.yaml)
+
+[![HeliumOS Canary Release](https://github.com/HeliumOS-org/bootc/actions/workflows/release-canary.yaml/badge.svg)](https://github.com/HeliumOS-org/bootc/actions/workflows/release-canary.yaml)
+
 ## Usage
 
 Building version 9
