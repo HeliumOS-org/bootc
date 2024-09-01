@@ -21,7 +21,9 @@ jobs:
 
       - name: Install build dependencies
         run: |
-          apt-get install -y podman
+          sudo apt-get update
+          sudo apt-get install -y \
+            podman
 
       - name: Build image
         env:
