@@ -49,6 +49,7 @@ jobs:
 
       - name: Push to registry
         env:
+          IS_CANARY: ${{ inputs.is_canary }}
           REGISTRY_IMAGE: ${{ vars.registry_image }}
           REGISTRY: ${{ vars.registry }}
           VERSION: ${{ matrix.version }}
