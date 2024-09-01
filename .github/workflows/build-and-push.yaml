@@ -36,7 +36,7 @@ jobs:
           else
             export CONTAINERFILE=$VERSION/Containerfile.$VARIANT
           fi 
-          podman build -t REGISTRY_IMAGE -f $CONTAINERFILE .
+          podman build -t $REGISTRY_IMAGE -f $CONTAINERFILE .
 
       - name: Login to registry
         env:
