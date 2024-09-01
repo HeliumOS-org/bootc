@@ -1,13 +1,13 @@
-name: HeliumOS Canary Release
+name: HeliumOS Stable Release
 on:
   push:
     branches:
-      - dev
+      - release
 
 jobs:
   build_and_push:
     uses: ./.github/workflows/build-and-push.yaml
     secrets: inherit
     with:
-      is_canary: true
+      is_canary: false
 
