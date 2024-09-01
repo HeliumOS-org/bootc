@@ -55,7 +55,7 @@ jobs:
           VERSION: ${{ matrix.version }}
           VARIANT: ${{ matrix.variant }}
         run: |
-          if [[ $IS_CANARY ]]; then
+          if [[ $IS_CANARY = true ]]; then
             export VERSION=$VERSION-canary
           fi
 
