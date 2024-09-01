@@ -16,52 +16,52 @@ on:
         required: true
         type: boolean
 
-  build_and_push:
-    name: Build and Push image
-    runs-on: ubuntu-24.04
-    steps:
+jobs:
+   name: Build and Push image
+   runs-on: ubuntu-24.04
+   steps:
 
-      - name: Checkout repository
-        uses: actions/checkout@v4
+     - name: Checkout repository
+       uses: actions/checkout@v4
 
-      - name: Install build dependencies
-        run: |
-          apt-get install -y podman
+     - name: Install build dependencies
+       run: |
+         apt-get install -y podman
 
-      - name: Build image
-        env:
-          VERSION: ${{ inputs.version }}
-          VARIANT: ${{ inputs.variant }}
-        run: |
-          if [[ $VARIANT == "" ]]; then
-            export CONTAINERFILE=$VERSION/Containerfile
-          else
-            export CONTAINERFILE=$VERSION/Containerfile.$VARIANT
-          fi 
-          podman build -t localhost/heliumos-bootc -f $CONTAINERFILE .
+     - name: Build image
+       env:
+         VERSION: ${{ inputs.version }}
+         VARIANT: ${{ inputs.variant }}
+       run: |
+         if [[ $VARIANT == "" ]]; then
+           export CONTAINERFILE=$VERSION/Containerfile
+         else
+           export CONTAINERFILE=$VERSION/Containerfile.$VARIANT
+         fi 
+         podman build -t localhost/heliumos-bootc -f $CONTAINERFILE .
 
-      - name: Login to registry
-        env:
-          REGISTRY_USER: ${{ secrets.registry_user }}
-          REGISTRY_PASS: ${{ secrets.registry_pass }}
-          REGISTRY_URI: ${{ secrets.registry_uri }}
-        run: |
-          podman login --username $REGISTRY_USER --password $REGISTRY_PASS $REGISTRY_URI
+     - name: Login to registry
+       env:
+         REGISTRY_USER: ${{ secrets.registry_user }}
+         REGISTRY_PASS: ${{ secrets.registry_pass }}
+         REGISTRY_URI: ${{ secrets.registry_uri }}
+       run: |
+         podman login --username $REGISTRY_USER --password $REGISTRY_PASS $REGISTRY_URI
 
-      - name: Push to registry
-        env:
-          REGISTRY_URI: ${{ secrets.registry_uri }}
-          VERSION: ${{ inputs.version }}
-          VARIANT: ${{ inputs.variant }}
-        run: |
-          if [[ $IS_CANARY ]]; then
-            export VERSION=$VERSION-canary
-          fi
+     - name: Push to registry
+       env:
+         REGISTRY_URI: ${{ secrets.registry_uri }}
+         VERSION: ${{ inputs.version }}
+         VARIANT: ${{ inputs.variant }}
+       run: |
+         if [[ $IS_CANARY ]]; then
+           export VERSION=$VERSION-canary
+         fi
 
-          if [[ $VARIANT == "" ]]; then
-            export TAG=$VERSION
-          else
-            export TAG=$VERSION-$VARIANT
-          fi
-          podman push localhost/heliumos-bootc $REGISTRY_URI:$TAG
+         if [[ $VARIANT == "" ]]; then
+           export TAG=$VERSION
+         else
+           export TAG=$VERSION-$VARIANT
+         fi
+         podman push localhost/heliumos-bootc $REGISTRY_URI:$TAG
  
