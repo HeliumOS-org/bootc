@@ -63,5 +63,5 @@ jobs:
           else
             export TAG=$VERSION-$VARIANT
           fi
-          podman push $REGISTRY_IMAGE $REGISTRY/$REGISTRY_IMAGE
+          podman push $REGISTRY_IMAGE $REGISTRY/$REGISTRY_IMAGE:$TAG
  
