@@ -8,8 +8,14 @@ dnf install -y --nobest \
 	@Workstation
 
 
+# Fix GNOME Software x Flatpak
 dnf install -y \
     https://mirror.stream.centos.org/9-stream/AppStream/x86_64/os/Packages/gnome-software-45.3-3.el9.x86_64.rpm
+
+
+# Fix thin title bars
+dnf install -y \
+    https://mirror.stream.centos.org/9-stream/AppStream/x86_64/os/Packages/gtk3-3.24.31-2.el9.x86_64.rpm
 
 
 dnf install -y \
