@@ -14,7 +14,7 @@ jobs:
     strategy:
       matrix:
         version: [9]
-        variant: ["", "edge"]
+        variant: ["", "edge", "nvidia"]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -35,7 +35,7 @@ jobs:
             export CONTAINERFILE=$VERSION/Containerfile
           else
             export CONTAINERFILE=$VERSION/Containerfile.$VARIANT
-          fi 
+          fi
           podman build -t $REGISTRY_IMAGE -f $CONTAINERFILE .
 
       - name: Login to registry
@@ -65,4 +65,3 @@ jobs:
             export TAG=$VERSION-$VARIANT
           fi
           podman push $REGISTRY_IMAGE docker://$REGISTRY/$REGISTRY_IMAGE:$TAG
- 

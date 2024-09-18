@@ -19,3 +19,9 @@ Building version 9-edge
 ```bash
 podman build -t localhost/heliumos-bootc:9-edge -f 9/Containerfile.edge .
 ```
+
+Building version 9-nvidia
+
+```bash
+podman build -t localhost/heliumos-bootc:9-nvidia -f 9/Containerfile.nvidia .
+```
