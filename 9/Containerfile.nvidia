@@ -28,7 +28,6 @@ RUN ./bootc.sh && rm bootc.sh
 
 COPY 9/kargs/10-heliumos.toml /usr/lib/bootc/kargs.d/10-heliumos.toml
 COPY 9/kargs/10-heliumos-nvidia.toml /usr/lib/bootc/kargs.d/10-heliumos-nvidia.toml
-COPY 9/dracut/10-heliumos.conf /usr/lib/dracut/dracut.conf.d/10-heliumos.conf
 COPY 9/kernel-nvidia.sh kernel.sh
 RUN ./kernel.sh && rm kernel.sh
 
