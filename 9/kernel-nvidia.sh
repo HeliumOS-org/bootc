@@ -4,6 +4,15 @@
 set -e
 
 
+dnf remove -y \
+    kernel-core
+
+
+dnf install -y \
+    kernel-core \
+    kernel-devel
+
+
 dnf module install -y \
     nvidia-driver:latest-dkms
 
