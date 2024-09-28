@@ -14,7 +14,7 @@ jobs:
     strategy:
       matrix:
         version: [9]
-        variant: ["", "edge", "nvidia"]
+        variant: ["", "edge"]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
