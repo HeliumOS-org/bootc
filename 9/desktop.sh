@@ -19,6 +19,7 @@ dnf install -y \
 
 
 dnf install -y \
+	firewall-config \
 	gnome-tweaks \
 	gnome-extensions-app \
 	gnome-shell-extension-appindicator \
