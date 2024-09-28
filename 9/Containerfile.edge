@@ -13,6 +13,9 @@ COPY 9/gschema_overrides/* /usr/share/glib-2.0/schemas/
 COPY 9/desktop.sh desktop.sh
 RUN ./desktop.sh && rm desktop.sh
 
+COPY 9/firewall.sh firewall.sh
+RUN ./firewall.sh && rm firewall.sh
+
 COPY 9/apps.sh apps.sh
 RUN ./apps.sh && rm apps.sh
 
