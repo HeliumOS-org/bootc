@@ -2,6 +2,3 @@
 name = "flathub"
 url = "https://dl.flathub.org/repo/flathub.flatpakrepo"
 
-[[packages]]
-remote = "flathub"
-app_id = "org.gnome.Epiphany"
