@@ -7,6 +7,7 @@ set -e
 dnf install -y \
     distrobox \
     chromium \
+    ocl-icd \ # https://codeberg.org/HeliumOS/bugs/issues/2
     git
 
 
