@@ -10,9 +10,13 @@ dnf install -y \
 
 
 dnf install -y \
-    distrobox \
     chromium \
     git
+
+dnf install -y \
+    distrobox \
+    podman-compose \
+    podman-docker
 
     
 dnf install -y \
