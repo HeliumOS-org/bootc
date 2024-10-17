@@ -4,16 +4,6 @@
 set -e
 
 
-kver=6.8.5-301.fc40.x86_64
-fver=40
-
-
-curl -O https://dl.fedoraproject.org/pub/fedora/linux/releases/$fver/Everything/x86_64/os/Packages/k/kernel-$kver.rpm
-curl -O https://dl.fedoraproject.org/pub/fedora/linux/releases/$fver/Everything/x86_64/os/Packages/k/kernel-core-$kver.rpm
-curl -O https://dl.fedoraproject.org/pub/fedora/linux/releases/$fver/Everything/x86_64/os/Packages/k/kernel-modules-core-$kver.rpm
-curl -O https://dl.fedoraproject.org/pub/fedora/linux/releases/$fver/Everything/x86_64/os/Packages/k/kernel-modules-$kver.rpm
-
-
 dnf remove -y \
     kernel \
     kernel-core \
@@ -21,16 +11,17 @@ dnf remove -y \
     kernel-modules
 
 
-dnf install -y \
-    ./kernel-*.rpm
+rm -rdf /usr/lib/modules/*
 
 
 dnf install -y \
-    kmod-kvdo \
-    vdo
+    kernel-ml \
+    kernel-ml-core \
+    kernel-ml-modules \
+    kernel-ml-modules-extra
 
 
-rm -rdf /usr/lib/modules/5.*
+kver=$(cd /usr/lib/modules && echo * | awk '{print $1}')
 
 
 dracut -vf /usr/lib/modules/$kver/initramfs.img $kver
