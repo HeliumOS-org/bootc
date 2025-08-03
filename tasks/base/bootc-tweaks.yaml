@@ -11,6 +11,12 @@
       mv /opt /var/opt
       ln -s /var/opt /opt
 
+- name: Set /usr/local mutable
+  shell:
+    cmd: |
+      mv /usr/local /var/usrlocal
+      ln -s /var/usrlocal /usr/local
+      
 - name: Reboot on Kernel Panic
   ansible.builtin.copy:
     content: |
