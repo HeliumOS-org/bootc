@@ -1,0 +1,5 @@
+[Main]
+Product=HeliumOS
+Version=10
+BugURL=https://bugs.heliumos.org
+IsFinal=True

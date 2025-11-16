@@ -48,28 +48,15 @@ iso:
 	mkdir ./out
 
 	cp \
-		./iso/config.toml \
-		./out/config.toml
+		./iso/config.ks \
+		./out/config.ks
+
 	sed -i \
     "s,<URL>,$(IMAGE):$(TAG),g" \
-    ./out/config.toml
+    ./out/config.ks
 
-	$(PODMAN) pull \
-		$(IMAGE):$(TAG)
-
-	$(PODMAN) run \
-		--rm \
-		-it \
-		--privileged \
-		--pull=newer \
-		--security-opt label=type:unconfined_t \
-		-v ./out/config.toml:/config.toml:ro \
-		-v ./out:/output \
-		-v /var/lib/containers/storage:/var/lib/containers/storage \
-		quay.io/centos-bootc/bootc-image-builder:sha256-12b08293b340613061e81414b67e1dbf76a47f8f9c631f94f27e4da99dfe757d \
-		--type anaconda-iso \
-		--use-librepo=False \
-		$(IMAGE):$(TAG)
+	wget https://kitten.repo.almalinux.org/10-kitten/isos/x86_64/AlmaLinux-Kitten-10-latest-x86_64-boot.iso
+	mv AlmaLinux-Kitten-10-latest-x86_64-boot.iso ./out/upstream.iso
 
 	$(PODMAN) run \
 		--rm \
@@ -85,8 +72,9 @@ iso:
 		&& rm -f /output/HeliumOS-${VERSION}-${ARCH}-boot.iso \
 		&& cd /iso/product && find . | cpio -c -o | gzip -9cv > /images/product.img && cd / \
 		&& mkksiso \
+			--ks /output/config.ks \
 			--add /images \
 			--volid heliumos-${VERSION}-boot \
 			--replace "vmlinuz" "vmlinuz inst.resolution=1280x800" \
-			/output/bootiso/install.iso \
+			/output/upstream.iso \
 			/output/HeliumOS-${VERSION}-${ARCH}-boot.iso'

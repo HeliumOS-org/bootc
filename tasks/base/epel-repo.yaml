@@ -3,3 +3,8 @@
     name:
       - epel-release
     state: present
+
+- name: Enable Code Ready Builder dnf repository
+  shell:
+    cmd: |
+      crb enable
