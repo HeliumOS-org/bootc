@@ -4,10 +4,8 @@
       - almalinux-release-nvidia-driver
     state: present
 
-
 - name: Install NVIDIA kmod drivers
   ansible.builtin.dnf:
     name:
-      - nvidia-driver
-      - nvidia-open-kmod
+      - nvidia-open
     state: present
