@@ -13,23 +13,20 @@
 - name: Set default Zsh config
   ansible.builtin.copy:
     content: |
-      autoload -Uz compinit promptinit up-line-or-beginning-search down-line-or-beginning-search
+      setopt INTERACTIVECOMMENTS
+
+      autoload -Uz compinit promptinit
 
       promptinit
       compinit
-      zle -N up-line-or-beginning-search
-      zle -N down-line-or-beginning-search
 
       zstyle ':completion:*' menu select
       PROMPT='%F{green}%n%f@%F{magenta}%m%f %F{blue}%B%~%b%f %# '
 
       HISTFILE=~/.zsh_history
-      HISTSIZE=99999
-      SAVEHIST=$HISTSIZE
-
-      setopt EXTENDED_HISTORY
+      HISTSIZE=1024
+      SAVEHIST=204
       setopt HIST_EXPIRE_DUPS_FIRST
       setopt HIST_IGNORE_DUPS
-      setopt INC_APPEND_HISTORY
-      setopt SHARE_HISTORY
+
     dest: /etc/skel/.zshrc
