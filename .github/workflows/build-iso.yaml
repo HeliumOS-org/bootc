@@ -21,6 +21,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Remove environment bloat
+        run: |
+          sudo rm -rf /usr/share/dotnet
+
       - name: Install dependencies
         run: |
           sudo apt-get update
