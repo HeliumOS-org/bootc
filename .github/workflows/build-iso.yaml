@@ -16,10 +16,14 @@ on:
 
 jobs:
   build_iso:
-    runs-on: ubuntu-24.04
+    runs-on: blacksmith-2vcpu-ubuntu-2404
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Remove environment bloat
+        run: |
+          sudo rm -rf /usr/share/dotnet
 
       - name: Install dependencies
         run: |
