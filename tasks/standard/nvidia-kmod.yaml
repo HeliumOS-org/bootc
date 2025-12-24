@@ -8,7 +8,7 @@
   shell:
     cmd: |
       sed -i \
-        's,rhel$releasever,10,g' \
+        's,rhel$releasever,rhel10,g' \
         /etc/yum.repos.d/nvidia-cuda.repo
 
 - name: Install NVIDIA kmod drivers
