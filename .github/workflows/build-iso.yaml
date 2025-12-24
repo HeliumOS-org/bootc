@@ -4,19 +4,19 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: 'HeliumOS version to build'
+        description: "HeliumOS version to build"
         required: true
         type: string
-        default: '10'
+        default: "10"
       arch:
-        description: 'CPU Architecture'
+        description: "CPU Architecture"
         required: true
         type: string
-        default: 'x86_64'
+        default: "x86_64"
 
 jobs:
   build_iso:
-    runs-on: ubuntu-24.04
+    runs-on: blacksmith-2vcpu-ubuntu-2404
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
