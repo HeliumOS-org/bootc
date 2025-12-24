@@ -46,7 +46,7 @@
       set -eoux pipefail
 
       old_favorites=$(sqlite3 ~/.local/share/kactivitymanagerd/resources/database "SELECT targettedResource FROM 'ResourceLink';")
- 
+
       for fav in $old_favorites; do
         qdbus-qt6 org.kde.ActivityManager /ActivityManager/Resources/Linking \
           org.kde.ActivityManager.ResourcesLinking.UnlinkResourceFromActivity \
@@ -56,7 +56,7 @@
       done
 
       new_favorites="preferred://browser,org.kde.kontact.desktop,systemsettings.desktop,org.kde.dolphin.desktop,org.kde.kwrite.desktop,org.kde.konsole.desktop,org.kde.discover.desktop"
- 
+
       echo "$new_favorites" | tr ',' '\n' | while read -r fav; do
         qdbus-qt6 org.kde.ActivityManager /ActivityManager/Resources/Linking \
           org.kde.ActivityManager.ResourcesLinking.LinkResourceToActivity \
@@ -65,7 +65,7 @@
           ":global"
       done
     dest: /usr/bin/heliumos-plasma-favorites-set-defaults
-    mode: '0755'
+    mode: "0755"
 
 - name: Install sqlite
   ansible.builtin.dnf:
@@ -92,3 +92,9 @@
     src: /usr/lib/systemd/user/heliumos-plasma-favorites-set-defaults.service
     dest: /etc/systemd/user/plasma-workspace.target.wants/heliumos-plasma-favorites-set-defaults.service
     state: link
+
+- name: Install Plymouth Spinner Theme
+  ansible.builtin.dnf:
+    name:
+      - plymouth-theme-spinner
+    state: present
