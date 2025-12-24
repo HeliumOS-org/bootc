@@ -1,6 +1,6 @@
 - ansible.builtin.import_tasks: ../base/base.yaml
 
-# - ansible.builtin.import_tasks: ../edge/kernel-hyperscale.yaml
+- ansible.builtin.import_tasks: ../edge/kernel-hyperscale.yaml
 
 # - ansible.builtin.import_tasks: ../edge/nvidia-dkms.yaml
 
