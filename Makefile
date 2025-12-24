@@ -66,7 +66,7 @@ iso:
 		-v ./out/config.toml:/config.toml:ro \
 		-v ./out:/output \
 		-v /var/lib/containers/storage:/var/lib/containers/storage \
-		quay.io/centos-bootc/bootc-image-builder:sha256-c2d6830647c095e29c8cabd1ef6ae0e903e77675b953655428ac5cef147541a0  \
+		quay.io/centos-bootc/bootc-image-builder:sha256-166a7ff959d402d86ce187674d015ac135ce4b76ec6f8e2dc28e3bd197e3a3e5  \
 		--type anaconda-iso \
 		--use-librepo=False \
 		$(IMAGE):$(TAG)
