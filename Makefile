@@ -65,7 +65,7 @@ iso:
 		--privileged \
 		-v ./out:/output \
 		-v ./iso:/iso \
-		quay.io/almalinuxorg/almalinux:10-kitten \
+		quay.io/almalinuxorg/almalinux:10.1 \
 		bash -c '\
 			dnf install -y lorax \
 		&& rm -rf /images && mkdir /images \
