@@ -55,8 +55,8 @@ iso:
     "s,<URL>,$(IMAGE):$(TAG),g" \
     ./out/config.ks
 
-	wget https://kitten.repo.almalinux.org/10-kitten/isos/x86_64/AlmaLinux-Kitten-10-latest-x86_64-boot.iso
-	mv AlmaLinux-Kitten-10-latest-x86_64-boot.iso ./out/upstream.iso
+    wget https://repo.almalinux.org/almalinux/10/isos/x86_64/AlmaLinux-10.1-x86_64-boot.iso
+	mv AlmaLinux-10.1-x86_64-boot.iso ./out/upstream.iso
 
 	$(PODMAN) run \
 		--rm \
