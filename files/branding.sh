@@ -16,7 +16,9 @@ rm -rf \
 
 sed -i 's,AlmaLinux,HeliumOS,g' \
     /usr/lib/os-release
-sed -i 's, (Purple Lion),,g' \
+sed -i 's,10.1,10,g' \
+    /usr/lib/os-release
+sed -i 's, (Heliotrope Lion),,g' \
     /usr/lib/os-release
 sed -i 's,ID="almalinux",ID="heliumos",g' \
     /usr/lib/os-release
@@ -33,8 +35,6 @@ sed -i 's,https://wiki.almalinux.org/,https://www.heliumos.org/docs,g' \
 sed -i 's,AlmaLinux,HeliumOS,g' \
     /usr/lib/os-release
 sed -i 's,https://bugs.almalinux.org/,https://bugs.heliumos.org/,g' \
-    /usr/lib/os-release
-sed -i 's, Kitten,,g' \
     /usr/lib/os-release
 sed -i 's, (Lion Cub),,g' \
     /usr/lib/os-release
