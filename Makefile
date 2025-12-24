@@ -72,8 +72,8 @@ iso:
 		$(IMAGE):$(TAG)
 
 	mv \
-	    /output/bootiso/install.iso \
-		/output/upstream.iso
+	    ./out/bootiso/install.iso \
+		./out/upstream.iso
 
 	$(PODMAN) run \
 		--rm \
