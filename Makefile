@@ -55,6 +55,8 @@ iso:
     "s,<URL>,$(IMAGE):$(TAG),g" \
     ./out/config.toml
 
+	$(PODMAN) pull $(IMAGE):$(TAG)
+
 	$(PODMAN) run \
 		--rm \
 		-it \
