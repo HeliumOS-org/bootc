@@ -53,7 +53,7 @@ iso:
 
 	sed -i \
     "s,<URL>,$(IMAGE):$(TAG),g" \
-    ./out/config.ks
+    ./out/config.toml
 
 	$(PODMAN) run \
 		--rm \
