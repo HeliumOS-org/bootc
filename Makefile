@@ -48,15 +48,30 @@ iso:
 	mkdir ./out
 
 	cp \
-		./iso/config.ks \
-		./out/config.ks
+		./iso/config.toml \
+		./out/config.toml
 
 	sed -i \
     "s,<URL>,$(IMAGE):$(TAG),g" \
     ./out/config.ks
 
-	wget https://repo.almalinux.org/almalinux/10/isos/x86_64/AlmaLinux-10.1-x86_64-boot.iso
-	mv AlmaLinux-10.1-x86_64-boot.iso ./out/upstream.iso
+	$(PODMAN) run \
+		--rm \
+		-it \
+		--privileged \
+		--pull=newer \
+		--security-opt label=type:unconfined_t \
+		-v ./out/config.toml:/config.toml:ro \
+		-v ./out:/output \
+		-v /var/lib/containers/storage:/var/lib/containers/storage \
+		quay.io/centos-bootc/bootc-image-builder:sha256-6b0433acb5819d62d9afdd8fd735cf3c7cc11dcf9bcc343e7df593423b3994fb \
+		--type anaconda-iso \
+		--use-librepo=False \
+		$(IMAGE):$(TAG)
+
+	mv \
+	    /output/bootiso/install.iso \
+		/output/upstream.iso
 
 	$(PODMAN) run \
 		--rm \
@@ -65,14 +80,13 @@ iso:
 		--privileged \
 		-v ./out:/output \
 		-v ./iso:/iso \
-		quay.io/almalinuxorg/almalinux:10-kitten \
+		quay.io/almalinuxorg/almalinux:10.1 \
 		bash -c '\
 			dnf install -y lorax \
 		&& rm -rf /images && mkdir /images \
 		&& rm -f /output/HeliumOS-${VERSION}-${ARCH}-boot.iso \
 		&& cd /iso/product && find . | cpio -c -o | gzip -9cv > /images/product.img && cd / \
 		&& mkksiso \
-			--ks /output/config.ks \
 			--add /images \
 			--volid heliumos-${VERSION}-boot \
 			--replace "vmlinuz" "vmlinuz inst.resolution=1280x800" \
