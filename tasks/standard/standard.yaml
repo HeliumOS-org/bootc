@@ -1,5 +1,5 @@
 - ansible.builtin.import_tasks: ../base/base.yaml
 
-# - ansible.builtin.import_tasks: ../standard/nvidia-kmod.yaml
+- ansible.builtin.import_tasks: ../standard/nvidia-kmod.yaml
 
 - ansible.builtin.import_tasks: ../post/post.yaml
