@@ -1,0 +1,39 @@
+[customizations.installer.kickstart]
+contents = """
+
+autopart --nohome
+zerombr
+clearpart --none --initlabel
+
+network --bootproto=dhcp --device=link --activate
+
+rootpw --lock
+timezone America/Chicago
+
+%addon com_redhat_kdump --disable
+%end
+
+%post
+
+bootc switch --mutate-in-place --transport registry <URL>
+
+rm -f /var/lib/systemd/random-seed
+
+systemctl disable kdump.service
+
+%end
+
+"""
+
+[customizations.installer.modules]
+enable = [
+    "org.fedoraproject.Anaconda.Modules.Localization",
+    "org.fedoraproject.Anaconda.Modules.Storage",
+    "org.fedoraproject.Anaconda.Modules.Timezone",
+    "org.fedoraproject.Anaconda.Modules.Users",
+]
+disable = [
+    "org.fedoraproject.Anaconda.Modules.Security",
+    "org.fedoraproject.Anaconda.Modules.Services",
+    "org.fedoraproject.Anaconda.Modules.Subscription",
+]
