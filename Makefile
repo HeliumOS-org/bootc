@@ -71,7 +71,7 @@ iso:
 		--use-librepo=False \
 		$(IMAGE):$(TAG)
 
-	mv \
+	sudo mv \
 	    ./out/bootiso/install.iso \
 		./out/upstream.iso
 
