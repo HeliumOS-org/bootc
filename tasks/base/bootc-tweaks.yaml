@@ -20,3 +20,22 @@
   ansible.builtin.file:
     path: /etc/systemd/system/timers.target.wants/rpm-ostree-countme.timer
     state: absent
+
+- name: Install legacy rechunker-group-fix script
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/zirconium-dev/zirconium/85cc566697b3337d37e2b6c6305c51b7f1a9e9b1/system_files/usr/bin/rechunker-group-fix
+    dest: /usr/bin/rechunker-group-fix
+    mode: "0755"
+    checksum: sha256:9b4891339b498e020f91de72aa2431d323bcbbc2702fc0022b502bd2ac28c1e5
+
+- name: Install legacy rechunker-group-fix service
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/zirconium-dev/zirconium/929d28b39f9643044d3a8c415d62d79197b74a17/system_files/usr/lib/systemd/system/rechunker-group-fix.service
+    dest: /usr/lib/systemd/system/rechunker-group-fix.service
+    checksum: sha256:9414b7b47b67ddf37a08336b7f2c562b252fa1807c9fcf007f48c8119a9275bd
+
+- name: Enable legacy rechunker-group-fix service
+  ansible.builtin.file:
+    src: /usr/lib/systemd/system/rechunker-group-fix.service
+    dest: /etc/systemd/system/multi-user.target.wants/rechunker-group-fix.service
+    state: link
