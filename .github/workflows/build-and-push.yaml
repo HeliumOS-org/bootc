@@ -33,24 +33,13 @@ jobs:
           REGISTRY_IMAGE: ${{ vars.registry_image }}
           VERSION: ${{ matrix.version }}
         run: |
-          make image VERSION=${VERSION} IS_CANARY=${IS_CANARY} IS_EDGE=${IS_EDGE}
+          make image rechunk VERSION=${VERSION} IS_CANARY=${IS_CANARY} IS_EDGE=${IS_EDGE}
           export TAG=$(make echo-tag VERSION=${VERSION} IS_CANARY=${IS_CANARY} IS_EDGE=${IS_EDGE})
 
           export IMAGE=$(make echo-image)
 
           echo "TAG=${TAG}" >> $GITHUB_OUTPUT
           echo "IMAGE=${IMAGE}" >> $GITHUB_OUTPUT
-
-      # - name: Run Rechunker
-      #   id: rechunk
-      #   uses: hhd-dev/rechunk@ded27feba22df48134eece2c66ba0fca1289ff40 # v1.2.3
-      #   with:
-      #     rechunk: "ghcr.io/hhd-dev/rechunk:v1.2.2"
-      #     ref: ${{ steps.build.outputs.IMAGE }}:${{ steps.build.outputs.TAG }}
-      #     skip_compression: true
-      #     version: ${{ steps.build.outputs.TAG }}
-      #     pretty: ${{ steps.build.outputs.TAG }}
-      #     revision: ${{ github.sha }}
 
       - name: Login to registry
         env:

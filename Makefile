@@ -37,7 +37,14 @@ image:
 		.
 
 rechunk:
-	$(SUDO) IMAGE=$(IMAGE):$(TAG) ./rechunk.sh
+	$(PODMAN) run \
+	    --rm \
+		--privileged \
+		-v /var/lib/containers:/var/lib/containers \
+        quay.io/almalinuxorg/almalinux-bootc:$(VERSION) \
+        /usr/libexec/bootc-base-imagectl rechunk \
+            $(IMAGE):$(TAG) \
+            $(IMAGE):$(TAG)
 
 push:
 	$(PODMAN) push \
