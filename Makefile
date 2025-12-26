@@ -67,6 +67,7 @@ iso:
 	$(PODMAN) run \
 		--rm \
 		-it \
+		--net host \
 		--privileged \
 		--pull=newer \
 		--security-opt label=type:unconfined_t \

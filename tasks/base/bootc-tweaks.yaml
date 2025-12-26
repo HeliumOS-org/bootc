@@ -1,9 +1,8 @@
 - name: Patch Bootc update service to remove apply
-  shell:
-    cmd: |
-      sed -i \
-        's,bootc upgrade --apply,bootc upgrade,g' \
-        /usr/lib/systemd/system/bootc-fetch-apply-updates.service
+  ansible.builtin.replace:
+    path: /usr/lib/systemd/system/bootc-fetch-apply-updates.service
+    regexp: "bootc upgrade --apply"
+    replace: "bootc upgrade"
 
 - name: Set /opt mutable
   shell:
