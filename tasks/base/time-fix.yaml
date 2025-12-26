@@ -1,0 +1,5 @@
+- name: Enable HeliumOS timedate-config service
+  ansible.builtin.file:
+    src: /usr/lib/systemd/system/timedate-config.service
+    dest: /etc/systemd/system/multi-user.target.wants/timedate-config.service
+    state: link

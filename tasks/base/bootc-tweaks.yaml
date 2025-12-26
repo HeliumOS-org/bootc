@@ -15,3 +15,8 @@
     content: |
       kargs = ["panic=3"]
     dest: /usr/lib/bootc/kargs.d/10-kernel-panic-reboot.toml
+
+- name: Disable rpm-ostree-countme service
+  ansible.builtin.file:
+    path: /etc/systemd/system/timers.target.wants/rpm-ostree-countme.timer
+    state: absent
