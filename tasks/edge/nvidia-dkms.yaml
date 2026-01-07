@@ -20,17 +20,9 @@
 #       dkms install -m nvidia/${nvidia_version} -k ${kernel_version} --force
 
 - name: Install NVIDIA dnf repository
-  ansible.builtin.dnf:
-    name:
-      - almalinux-release-nvidia-driver
-    state: present
-
-- name: Use major-stable NVIDIA dnf repository
   shell:
     cmd: |
-      sed -i \
-        's,rhel$releasever,rhel10,g' \
-        /etc/yum.repos.d/nvidia-cuda.repo
+      dnf config-manager --add-repo https://developer.download.nvidia.com/compute/cuda/repos/rhel10/x86_64/cuda-rhel10.repo
 
 - name: Install NVIDIA dkms drivers
   ansible.builtin.dnf:
