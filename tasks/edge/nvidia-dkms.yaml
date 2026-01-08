@@ -1,26 +1,26 @@
-# - name: Install NVIDIA dnf repository (negativo)
-#   shell:
-#     cmd: |
-#       dnf config-manager \
-#         --add-repo=https://negativo17.org/repos/epel-nvidia.repo
-
-# - name: Install NVIDIA dkms driver sources
-#   ansible.builtin.dnf:
-#     name:
-#       - nvidia-driver
-#       - dkms-nvidia
-#     state: present
-
-- name: Install NVIDIA dnf repository
+- name: Install NVIDIA dnf repository (negativo)
   shell:
     cmd: |
-      dnf config-manager --add-repo https://developer.download.nvidia.com/compute/cuda/repos/rhel10/x86_64/cuda-rhel10.repo
+      dnf config-manager \
+        --add-repo=https://negativo17.org/repos/epel-nvidia.repo
 
-- name: Install NVIDIA dkms drivers
+- name: Install NVIDIA dkms driver sources
   ansible.builtin.dnf:
     name:
-      - kmod-nvidia-open-dkms
+      - nvidia-driver
+      - dkms-nvidia
     state: present
+
+# - name: Install NVIDIA dnf repository
+#   shell:
+#     cmd: |
+#       dnf config-manager --add-repo https://developer.download.nvidia.com/compute/cuda/repos/rhel10/x86_64/cuda-rhel10.repo
+
+# - name: Install NVIDIA dkms drivers
+#   ansible.builtin.dnf:
+#     name:
+#       - kmod-nvidia-open-dkms
+#     state: present
 
 - name: Build and install NVIDIA dkms drivers
   shell:
