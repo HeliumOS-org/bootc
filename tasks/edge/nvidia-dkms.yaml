@@ -25,7 +25,7 @@
 - name: Build and install NVIDIA dkms drivers
   shell:
     cmd: |
-      nvidia_version=$(dnf list installed | grep dkms-nvidia | awk '{print $2}' | cut -d':' -f2- | cut -d'-' -f1)
+      nvidia_version=$(dnf list installed | grep dkms | grep nvidia | awk '{print $2}' | cut -d':' -f2- | cut -d'-' -f1)
       kernel_version=$(dnf list installed kernel | awk '/kernel/{print $2}' | head -n1).x86_64
       dkms build -m nvidia/${nvidia_version} -k ${kernel_version} --force
       dkms install -m nvidia/${nvidia_version} -k ${kernel_version} --force
