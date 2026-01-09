@@ -18,10 +18,9 @@
     fedora_releasever: 42
 
 - name: Install Fedora kernel
-  ansible.builtin.dnf:
-    enablerepo: fedora
-    name:
-      - kernel
-      - kernel-devel
-      - kernel-headers
-    state: latest
+  shell:
+    cmd: |
+      dnf install -y --enablerepo fedora \
+        kernel \
+        kernel-devel \
+        kernel-headers
