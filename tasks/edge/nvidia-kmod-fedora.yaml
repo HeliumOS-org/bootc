@@ -1,0 +1,18 @@
+- name: Add Fedora repo
+  ansible.builtin.copy:
+    content: |
+      [cuda-fedora42-x86_64]
+      name=cuda-fedora42-x86_64
+      baseurl=https://developer.download.nvidia.com/compute/cuda/repos/fedora42/x86_64
+      enabled=1
+      gpgcheck=1
+      gpgkey=https://developer.download.nvidia.com/compute/cuda/repos/fedora42/x86_64/D42D0685.pub
+    dest: /etc/yum.repos.d/nvidia-fedora.repo
+
+- name: Install NVIDIA kmod drivers
+  ansible.builtin.dnf:
+    name:
+      - nvidia-open
+      - nvidia-driver
+      - kmod-nvidia-open-dkms
+    state: present
