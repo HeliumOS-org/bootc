@@ -11,17 +11,17 @@
 #       - dkms-nvidia
 #     state: present
 
-- name: Install NVIDIA dnf repository
-  shell:
-    cmd: |
-      dnf config-manager --add-repo https://developer.download.nvidia.com/compute/cuda/repos/rhel10/x86_64/cuda-rhel10.repo
+# - name: Install NVIDIA dnf repository
+#   shell:
+#     cmd: |
+#       dnf config-manager --add-repo https://developer.download.nvidia.com/compute/cuda/repos/rhel10/x86_64/cuda-rhel10.repo
 
-- name: Install NVIDIA dkms drivers
-  ansible.builtin.dnf:
-    name:
-      - nvidia-driver
-      - kmod-nvidia-open-dkms
-    state: present
+# - name: Install NVIDIA dkms drivers
+#   ansible.builtin.dnf:
+#     name:
+#       - nvidia-driver
+#       - kmod-nvidia-open-dkms
+#     state: present
 # - name: Build and install NVIDIA dkms drivers
 #   shell:
 #     cmd: |
