@@ -1,12 +1,11 @@
-- name: Add Fedora repo
+- name: Install NVIDIA dnf repository
   ansible.builtin.copy:
     content: |
       [cuda-fedora42-x86_64]
       name=cuda-fedora42-x86_64
       baseurl=https://developer.download.nvidia.com/compute/cuda/repos/fedora42/x86_64
       enabled=1
-      gpgcheck=1
-      gpgkey=https://developer.download.nvidia.com/compute/cuda/repos/fedora42/x86_64/D42D0685.pub
+      gpgcheck=0
     dest: /etc/yum.repos.d/nvidia-fedora.repo
 
 - name: Install NVIDIA kmod drivers
