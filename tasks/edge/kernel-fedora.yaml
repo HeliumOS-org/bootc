@@ -15,11 +15,12 @@
       skip_if_unavailable=False
     dest: /etc/yum.repos.d/fedora.repo
   vars:
-    fedora_releasever: 43
+    fedora_releasever: 42
 
 - name: Install Fedora kernel
   ansible.builtin.dnf:
     enablerepo: fedora
+    disablerepo: baseos,appstream
     name:
       - kernel
       - kernel-devel

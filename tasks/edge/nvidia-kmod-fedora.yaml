@@ -1,25 +1,17 @@
 - name: Install NVIDIA dnf repository
   ansible.builtin.copy:
     content: |
-      [fedora-nvidia]
-      name=negativo17 - Nvidia
-      baseurl=https://negativo17.org/repos/nvidia/fedora-{{ fedora_releasever }}/$basearch/
+      [cuda-fedora42-x86_64]
+      name=cuda-fedora42-x86_64
+      baseurl=https://developer.download.nvidia.com/compute/cuda/repos/fedora42/x86_64
       enabled=1
-      skip_if_unavailable=1
-      gpgcheck=1
-      gpgkey=https://negativo17.org/repos/RPM-GPG-KEY-slaanesh
-      enabled_metadata=1
-      metadata_expire=6h
-      type=rpm-md
-      repo_gpgcheck=0
+      gpgcheck=0
     dest: /etc/yum.repos.d/nvidia-fedora.repo
-  vars:
-    fedora_releasever: 43
 
 - name: Install NVIDIA kmod drivers
   ansible.builtin.dnf:
     name:
-      - kmod-nvidia
+      - nvidia-open
       - nvidia-driver
-      - nvidia-settings
+      - kmod-nvidia-open-dkms
     state: present
