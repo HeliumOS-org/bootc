@@ -15,12 +15,13 @@
       skip_if_unavailable=False
     dest: /etc/yum.repos.d/fedora.repo
   vars:
-    fedora_releasever: 42
+    fedora_releasever: 43
 
 - name: Install Fedora kernel
-  shell:
-    cmd: |
-      dnf install -y --enablerepo fedora \
-        kernel \
-        kernel-devel \
-        kernel-headers
+  ansible.builtin.dnf:
+    enablerepo: fedora
+    name:
+      - kernel
+      - kernel-devel
+      - kernel-headers
+    state: latest
