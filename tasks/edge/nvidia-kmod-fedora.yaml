@@ -10,6 +10,7 @@
 
 - name: Install NVIDIA kmod drivers
   ansible.builtin.dnf:
+    enablerepo: fedora
     name:
       - nvidia-open
       - nvidia-driver

@@ -23,6 +23,6 @@
     disablerepo: baseos,appstream
     name:
       - kernel
-      - kernel-devel
+      - kernel-devel-matched
       - kernel-headers
     state: latest
