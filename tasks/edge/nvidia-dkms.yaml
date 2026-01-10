@@ -1,46 +1,33 @@
-# - name: Install NVIDIA dnf repository (negativo)
-#   shell:
-#     cmd: |
-#       dnf config-manager \
-#         --add-repo=https://negativo17.org/repos/epel-nvidia.repo
+- name: Install NVIDIA dnf repository
+  ansible.builtin.copy:
+    content: |
+      [fedora-nvidia-580]
+      name=negativo17 - Nvidia
+      baseurl=https://negativo17.org/repos/nvidia-580/fedora-{{ fedora_releasever }}/$basearch/
+      enabled=1
+      skip_if_unavailable=1
+      gpgcheck=1
+      gpgkey=https://negativo17.org/repos/RPM-GPG-KEY-slaanesh
+      enabled_metadata=1
+      metadata_expire=6h
+      type=rpm-md
+      repo_gpgcheck=0
+    dest: /etc/yum.repos.d/nvidia-fedora.repo
+  vars:
+    fedora_releasever: 42
 
-# - name: Install NVIDIA dkms driver sources
-#   ansible.builtin.dnf:
-#     name:
-#       - nvidia-driver
-#       - dkms-nvidia
-#     state: present
+- name: Install NVIDIA DKMS packages
+  ansible.builtin.dnf:
+    enablerepo: fedora
+    name:
+      - nvidia-driver
+      - dkms-nvidia
+    state: present
 
-# - name: Install NVIDIA dnf repository
-#   shell:
-#     cmd: |
-#       dnf config-manager --add-repo https://developer.download.nvidia.com/compute/cuda/repos/rhel10/x86_64/cuda-rhel10.repo
-
-# - name: Install NVIDIA dkms drivers
-#   ansible.builtin.dnf:
-#     name:
-#       - nvidia-driver
-#       - kmod-nvidia-open-dkms
-#     state: present
-# - name: Build and install NVIDIA dkms drivers
-#   shell:
-#     cmd: |
-#       nvidia_version=$(dnf list installed | grep dkms | grep nvidia | awk '{print $2}' | cut -d':' -f2- | cut -d'-' -f1)
-#       kernel_version=$(dnf list installed kernel | awk '/kernel/{print $2}' | head -n1).x86_64
-#       dkms build -m nvidia/${nvidia_version} -k ${kernel_version} --force
-#       dkms install -m nvidia/${nvidia_version} -k ${kernel_version} --force
-
-# - name: Download NVIDIA .run installer
-#   ansible.builtin.get_url:
-#     url: https://in.download.nvidia.com/XFree86/Linux-x86_64/580.119.02/NVIDIA-Linux-x86_64-580.119.02.run
-#     dest: /NVIDIA.run
-#     mode: "0755"
-#     checksum: sha256:8020f5dfd3ee88aee7a38990d0c3d2afe54751e9a170ba9eadd7ea670138ecd7
-
-# - name: Build and install NVIDIA dkms drivers
-#   shell:
-#     cmd: |
-#       nvidia_version=$(dnf list installed | grep dkms | grep nvidia | awk '{print $2}' | cut -d':' -f2- | cut -d'-' -f1)
-#       kernel_version=$(dnf list installed kernel | awk '/kernel/{print $2}' | head -n1).x86_64
-#       /NVIDIA.run -M open --disable-nouveau --silent --kernel-source-path=/lib/modules/${kernel_version}/build
-#       rm /NVIDIA.run
+- name: Build NVIDIA DKMS drivers
+  shell:
+    cmd: |
+      export NVIDIA_VERSION=$(dnf list installed | grep dkms | grep nvidia | awk '{print $2}' | cut -d':' -f2- | cut -d'-' -f1)
+      export KERNEL_VERSION=$(dnf list installed kernel | awk '/kernel/{print $2}' | head -n1).x86_64
+      dkms build -m nvidia/${NVIDIA_VERSION} -k ${KERNEL_VERSION} --force
+      dkms install -m nvidia/${NVIDIA_VERSION} -k ${KERNEL_VERSION} --force
