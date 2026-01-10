@@ -20,8 +20,9 @@
   ansible.builtin.dnf:
     enablerepo: fedora
     name:
-      - nvidia-driver
       - dkms-nvidia
+      - nvidia-driver
+      - nvidia-driver-cuda
     state: present
 
 - name: Build NVIDIA DKMS drivers
