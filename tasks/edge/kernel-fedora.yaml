@@ -15,7 +15,7 @@
       skip_if_unavailable=False
     dest: /etc/yum.repos.d/fedora.repo
   vars:
-    fedora_releasever: 42
+    fedora_releasever: 43
 
 - name: Install Fedora kernel
   ansible.builtin.dnf:

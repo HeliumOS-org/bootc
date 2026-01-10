@@ -14,7 +14,7 @@
       repo_gpgcheck=0
     dest: /etc/yum.repos.d/nvidia-fedora.repo
   vars:
-    fedora_releasever: 42
+    fedora_releasever: 43
 
 - name: Install NVIDIA DKMS packages
   ansible.builtin.dnf:
