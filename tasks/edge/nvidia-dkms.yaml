@@ -1,3 +1,9 @@
+- name: Blacklist Nouveau drivers
+  ansible.builtin.copy:
+    content: |
+      blacklist nouveau
+    dest: /etc/modprobe.d/blacklist-nouveau.conf
+
 - name: Install NVIDIA dnf repository
   ansible.builtin.copy:
     content: |
