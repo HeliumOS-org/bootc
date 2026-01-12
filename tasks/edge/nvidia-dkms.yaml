@@ -11,12 +11,17 @@
       - dkms-nvidia
     state: present
 
-- name: Configure dkms for NVIDIA open driver
-  shell:
-    cmd: |
-      sed -i -e \
-        's/kernel$/kernel-open/g' \
-        /etc/nvidia/kernel.conf
+- name: Blacklist Nouveau drivers
+  ansible.builtin.copy:
+    content: |
+      blacklist nouveau
+    dest: /etc/modprobe.d/blacklist-nouveau.conf
+
+- name: Enable nvidia-drm modeset
+  ansible.builtin.copy:
+    content: |
+      options nvidia-drm modeset=1
+    dest: /etc/modprobe.d/nvidia-modeset.conf
 
 - name: Build and install NVIDIA dkms drivers
   shell:
