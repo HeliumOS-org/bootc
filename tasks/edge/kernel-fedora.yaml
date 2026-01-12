@@ -17,7 +17,13 @@
   vars:
     fedora_releasever: 43
 
-- name: Install Fedora kernel
+- name: Remove conflicting packages
+  ansible.builtin.dnf:
+    name:
+      - python3-perf
+    state: absent
+
+- name: Install Fedora kernel, mesa
   ansible.builtin.dnf:
     enablerepo: fedora
     disablerepo: baseos,appstream
@@ -25,4 +31,5 @@
       - kernel
       - kernel-devel-matched
       - kernel-headers
+      - mesa-dri-drivers
     state: latest
