@@ -28,19 +28,27 @@
   vars:
     fedora_releasever: 43
 
-- name: Install NVIDIA DKMS packages
+- name: Install NVIDIA akmod packages
   ansible.builtin.dnf:
     enablerepo: fedora
     name:
-      - dkms-nvidia
+      - akmod-nvidia
       - nvidia-driver
       - nvidia-driver-cuda
     state: present
+# - name: Install NVIDIA DKMS packages
+#   ansible.builtin.dnf:
+#     enablerepo: fedora
+#     name:
+#       - dkms-nvidia
+#       - nvidia-driver
+#       - nvidia-driver-cuda
+#     state: present
 
-- name: Build NVIDIA DKMS drivers
-  shell:
-    cmd: |
-      export NVIDIA_VERSION=$(dnf list installed | grep dkms | grep nvidia | awk '{print $2}' | cut -d':' -f2- | cut -d'-' -f1)
-      export KERNEL_VERSION=$(dnf list installed kernel | awk '/kernel/{print $2}' | head -n1).x86_64
-      dkms build -m nvidia/${NVIDIA_VERSION} -k ${KERNEL_VERSION} --force
-      dkms install -m nvidia/${NVIDIA_VERSION} -k ${KERNEL_VERSION} --force
+# - name: Build NVIDIA DKMS drivers
+#   shell:
+#     cmd: |
+#       export NVIDIA_VERSION=$(dnf list installed | grep dkms | grep nvidia | awk '{print $2}' | cut -d':' -f2- | cut -d'-' -f1)
+#       export KERNEL_VERSION=$(dnf list installed kernel | awk '/kernel/{print $2}' | head -n1).x86_64
+#       dkms build -m nvidia/${NVIDIA_VERSION} -k ${KERNEL_VERSION} --force
+#       dkms install -m nvidia/${NVIDIA_VERSION} -k ${KERNEL_VERSION} --force
