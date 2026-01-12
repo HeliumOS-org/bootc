@@ -10,6 +10,12 @@
       options nvidia-drm modeset=1
     dest: /etc/modprobe.d/nvidia-modeset.conf
 
+- name: Enable NVIDIA GBM
+  ansible.builtin.copy:
+    content: |
+      options nvidia NVreg_UseGbmForWayland=1
+    dest: /etc/modprobe.d/nvidia-gbm.conf
+
 - name: Install NVIDIA dnf repository
   ansible.builtin.copy:
     content: |
