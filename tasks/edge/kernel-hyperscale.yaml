@@ -1,0 +1,20 @@
+- name: Install CentOS Hyperscale dnf repository
+  ansible.builtin.dnf:
+    name:
+      - https://mirror.stream.centos.org/SIGs/10-stream/extras/x86_64/extras-common/Packages/c/centos-release-hyperscale-10-4.el10s.noarch.rpm
+      - https://mirror.stream.centos.org/SIGs/10-stream/extras/x86_64/extras-common/Packages/c/centos-release-hyperscale-kernel-10-4.el10s.noarch.rpm
+    state: present
+    disable_gpg_check: true
+
+- name: Install CentOS Hyperscale Kernel
+  ansible.builtin.dnf:
+    name: kernel
+    state: latest
+    disable_gpg_check: true
+
+- name: Remove stock kernel
+  shell:
+    cmd: |
+      current_kernel=$(dnf list installed kernel | awk '/kernel/{print $2}' | head -n1)
+      find /lib/modules /usr/lib/modules -mindepth 1 -maxdepth 1 -type d \
+      ! -name "$current_kernel*" -exec rm -rf {} +
