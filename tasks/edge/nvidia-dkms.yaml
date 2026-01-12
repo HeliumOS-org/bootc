@@ -4,6 +4,12 @@
       blacklist nouveau
     dest: /etc/modprobe.d/blacklist-nouveau.conf
 
+- name: Enable nvidia-drm modeset
+  ansible.builtin.copy:
+    content: |
+      options nvidia-drm modeset=1
+    dest: /etc/modprobe.d/nvidia-modeset.conf
+
 - name: Install NVIDIA dnf repository
   ansible.builtin.copy:
     content: |
