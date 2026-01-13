@@ -1,5 +1,5 @@
 - name: Branding
-  ansible.builtin.script: /workdir/files/branding.sh
+  ansible.builtin.script: /workdir/files/usr/bin/branding.sh
 
 - name: Configure SDDM theme
   shell:
