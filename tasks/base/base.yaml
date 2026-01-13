@@ -11,6 +11,6 @@
 - ansible.builtin.import_tasks: ../base/kde-plasma.yaml
 # - ansible.builtin.import_tasks: ../base/selinux.yaml
 # - ansible.builtin.import_tasks: ../base/shell.yaml
-- ansible.builtin.import_tasks: ../base/branding.yaml
+# - ansible.builtin.import_tasks: ../base/branding.yaml
 # - ansible.builtin.import_tasks: ../base/time-fix.yaml
 # - ansible.builtin.import_tasks: ../base/kdump.yaml
