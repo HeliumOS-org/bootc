@@ -98,3 +98,10 @@
     name:
       - plymouth-theme-spinner
     state: present
+
+- name: Set default plymouth theme
+  ansible.builtin.copy:
+    content: |
+      [Daemon]
+      Theme=spinner
+    dest: /etc/plymouth/plymouthd.conf
