@@ -107,8 +107,3 @@
       ShowDelay=0
       DeviceTimeout=8
     dest: /etc/plymouth/plymouthd.conf
-
-- name: Rebuild initrd with plymouth changes
-  shell:
-    cmd: |
-      plymouth-set-default-theme --rebuild-initrd
