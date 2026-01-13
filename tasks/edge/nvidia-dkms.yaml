@@ -6,6 +6,7 @@
 
 - name: Install NVIDIA dkms driver sources
   ansible.builtin.dnf:
+    nobest: true
     name:
       - dkms-nvidia
       - nvidia-driver
