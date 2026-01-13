@@ -7,8 +7,9 @@
 - name: Install NVIDIA dkms driver sources
   ansible.builtin.dnf:
     name:
-      - nvidia-driver
       - dkms-nvidia
+      - nvidia-driver
+      - nvidia-driver-cuda
     state: present
 
 - name: Blacklist Nouveau drivers
