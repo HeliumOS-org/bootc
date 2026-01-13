@@ -13,3 +13,4 @@
 - ansible.builtin.import_tasks: ../base/shell.yaml
 - ansible.builtin.import_tasks: ../base/branding.yaml
 - ansible.builtin.import_tasks: ../base/time-fix.yaml
+- ansible.builtin.import_tasks: ../base/kdump.yaml

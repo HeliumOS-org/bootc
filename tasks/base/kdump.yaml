@@ -1,0 +1,4 @@
+- name: Disable kdump service
+  ansible.builtin.file:
+    path: /etc/systemd/system/multi-user.target.wants/kdump.service
+    state: absent

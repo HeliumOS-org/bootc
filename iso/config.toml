@@ -19,8 +19,6 @@ bootc switch --mutate-in-place --transport registry <URL>
 
 rm -f /var/lib/systemd/random-seed
 
-systemctl disable kdump.service
-
 %end
 
 """
