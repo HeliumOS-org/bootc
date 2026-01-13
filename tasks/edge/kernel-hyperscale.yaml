@@ -1,12 +1,32 @@
+- name: Add CentOS Hyperscale Kernel dnf repository
+  ansible.builtin.copy:
+    content: |
+      [centos-hyperscale-kernel]
+      name=CentOS Stream $releasever - Hyperscale Kernel
+      #metalink=https://mirrors.centos.org/metalink?repo=centos-hyperscale-sig-packages-kernel-$stream&arch=$basearch&protocol=https,http
+      baseurl=https://mirror.stream.centos.org/SIGs/10-stream/hyperscale/$basearch/packages-kernel/
+      gpgcheck=1
+      enabled=0
+      countme=1
+      priority=50
+      gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-HyperScale
+    dest: /etc/yum.repos.d/centos-hyperscale-kernel.repo
+
+- name: Add CentOS Hyperscale dnf repository GPG Key
+  ansible.builtin.get_url:
+    url: https://gitlab.com/CentOS/Hyperscale/rpms/centos-release-hyperscale/-/raw/89c9e6f1b585090756d4dd9e07f79a935e5dbafb/RPM-GPG-KEY-CentOS-SIG-HyperScale
+    dest: /etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-HyperScale
+    checksum: sha256:dbc65f3d5755f7a1e7774574e0faea1fe0db24eade40eea0d879c62f3f51533c
+
 - name: Install CentOS Hyperscale Kernel
   ansible.builtin.dnf:
+    enablerepo: centos-hyperscale-kernel
     name:
-      - https://mirror.stream.centos.org/SIGs/10-stream/hyperscale/x86_64/packages-kernel/Packages/k/kernel-6.16.4-0.hs1.hsk.el10.x86_64.rpm
-      - https://mirror.stream.centos.org/SIGs/10-stream/hyperscale/x86_64/packages-kernel/Packages/k/kernel-core-6.16.4-0.hs1.hsk.el10.x86_64.rpm
-      - https://mirror.stream.centos.org/SIGs/10-stream/hyperscale/x86_64/packages-kernel/Packages/k/kernel-modules-6.16.4-0.hs1.hsk.el10.x86_64.rpm
-      - https://mirror.stream.centos.org/SIGs/10-stream/hyperscale/x86_64/packages-kernel/Packages/k/kernel-modules-core-6.16.4-0.hs1.hsk.el10.x86_64.rpm
-      - https://mirror.stream.centos.org/SIGs/10-stream/hyperscale/x86_64/packages-kernel/Packages/k/kernel-modules-extra-6.16.4-0.hs1.hsk.el10.x86_64.rpm
-      - https://mirror.stream.centos.org/SIGs/10-stream/hyperscale/x86_64/packages-kernel/Packages/k/kernel-devel-6.16.4-0.hs1.hsk.el10.x86_64.rpm
-      - https://mirror.stream.centos.org/SIGs/10-stream/hyperscale/x86_64/packages-kernel/Packages/k/kernel-devel-matched-6.16.4-0.hs1.hsk.el10.x86_64.rpm
+      - kernel
+      - kernel-core
+      - kernel-devel
+      - kernel-devel-matched
+      - kernel-modules
+      - kernel-modules-core
+      - kernel-modules-extra
     state: latest
-    disable_gpg_check: true
