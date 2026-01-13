@@ -96,14 +96,15 @@
 - name: Install Plymouth Spinner Theme
   ansible.builtin.dnf:
     name:
-      - plymouth-theme-spinner
+      - plymouth-system-theme
+      # - plymouth-theme-spinner
     state: present
 
-- name: Set default plymouth theme
-  ansible.builtin.copy:
-    content: |
-      [Daemon]
-      Theme=spinner
-      ShowDelay=0
-      DeviceTimeout=8
-    dest: /etc/plymouth/plymouthd.conf
+# - name: Set default plymouth theme
+#   ansible.builtin.copy:
+#     content: |
+#       [Daemon]
+#       Theme=spinner
+#       ShowDelay=0
+#       DeviceTimeout=8
+#     dest: /etc/plymouth/plymouthd.conf
