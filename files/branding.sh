@@ -143,4 +143,4 @@ dnf remove -y \
 rm -rf \
     /var/run
 
-rm /usr/bin/branding.sh
+rm /branding.sh
