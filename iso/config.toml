@@ -5,7 +5,7 @@ autopart --type=btrfs --nohome
 zerombr
 clearpart --none --initlabel
 
-network --bootproto=dhcp --device=link --activate
+network --hostname heliumos --bootproto=dhcp --device=link --activate
 
 rootpw --lock
 timezone America/Chicago
