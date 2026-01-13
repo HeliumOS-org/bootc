@@ -20,8 +20,8 @@
 - name: Enable nvidia-drm modeset
   ansible.builtin.copy:
     content: |
-      options nvidia-drm modeset=1
-    dest: /etc/modprobe.d/nvidia-modeset.conf
+      nvidia-drm.modeset=1
+    dest: /usr/lib/bootc/kargs.d/10-nvidia-drm.toml
 
 - name: Build and install NVIDIA dkms drivers
   shell:
