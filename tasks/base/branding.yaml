@@ -1,97 +1,97 @@
-- name: Branding
-  ansible.builtin.script: /workdir/files/usr/bin/branding.sh
+# - name: Branding
+#   ansible.builtin.script: /workdir/files/usr/bin/branding.sh
 
-- name: Configure SDDM theme
-  shell:
-    cmd: |
-      sed -i \
-        's,#Current=01-breeze-fedora,Current=breeze,g' \
-        /etc/sddm.conf
+# - name: Configure SDDM theme
+#   shell:
+#     cmd: |
+#       sed -i \
+#         's,#Current=01-breeze-fedora,Current=breeze,g' \
+#         /etc/sddm.conf
 
-      sed -i \
-        's,/usr/share/wallpapers/Next/contents/images/5120x2880.png,/usr/share/wallpapers/Andromeda/contents/images/5338x5905.jpg,g' \
-        /usr/share/sddm/themes/breeze/theme.conf
+#       sed -i \
+#         's,/usr/share/wallpapers/Next/contents/images/5120x2880.png,/usr/share/wallpapers/Andromeda/contents/images/5338x5905.jpg,g' \
+#         /usr/share/sddm/themes/breeze/theme.conf
 
-- name: Add EULA directories
-  ansible.builtin.file:
-    path: /usr/share/{{ item.vendor }}-release
-    state: directory
-  loop:
-    - { vendor: heliumos }
-    - { vendor: almalinux }
-    - { vendor: redhat }
+# - name: Add EULA directories
+#   ansible.builtin.file:
+#     path: /usr/share/{{ item.vendor }}-release
+#     state: directory
+#   loop:
+#     - { vendor: heliumos }
+#     - { vendor: almalinux }
+#     - { vendor: redhat }
 
-- name: Add EULA files
-  ansible.builtin.copy:
-    content: |
-      HeliumOS 10 EULA
+# - name: Add EULA files
+#   ansible.builtin.copy:
+#     content: |
+#       HeliumOS 10 EULA
 
-      HeliumOS 10 comes with no guarantees or warranties of any sorts,
-      either written or implied.
+#       HeliumOS 10 comes with no guarantees or warranties of any sorts,
+#       either written or implied.
 
-      The Distribution is released as GPLv2. Individual packages in the
-      distribution come with their own licences. A copy of the GPLv2 license
-      is included with the distribution media.
-    dest: /usr/share/{{ item.vendor }}-release/EULA
-  loop:
-    - { vendor: heliumos }
-    - { vendor: almalinux }
-    - { vendor: redhat }
+#       The Distribution is released as GPLv2. Individual packages in the
+#       distribution come with their own licences. A copy of the GPLv2 license
+#       is included with the distribution media.
+#     dest: /usr/share/{{ item.vendor }}-release/EULA
+#   loop:
+#     - { vendor: heliumos }
+#     - { vendor: almalinux }
+#     - { vendor: redhat }
 
-- name: Create Plasma favorites defaults script for HeliumOS
-  ansible.builtin.copy:
-    content: |
-      #!/usr/bin/env bash
+# - name: Create Plasma favorites defaults script for HeliumOS
+#   ansible.builtin.copy:
+#     content: |
+#       #!/usr/bin/env bash
 
-      set -eoux pipefail
+#       set -eoux pipefail
 
-      old_favorites=$(sqlite3 ~/.local/share/kactivitymanagerd/resources/database "SELECT targettedResource FROM 'ResourceLink';")
+#       old_favorites=$(sqlite3 ~/.local/share/kactivitymanagerd/resources/database "SELECT targettedResource FROM 'ResourceLink';")
 
-      for fav in $old_favorites; do
-        qdbus-qt6 org.kde.ActivityManager /ActivityManager/Resources/Linking \
-          org.kde.ActivityManager.ResourcesLinking.UnlinkResourceFromActivity \
-          "org.kde.plasma.favorites.applications" \
-          "applications:$fav" \
-          ":global"
-      done
+#       for fav in $old_favorites; do
+#         qdbus-qt6 org.kde.ActivityManager /ActivityManager/Resources/Linking \
+#           org.kde.ActivityManager.ResourcesLinking.UnlinkResourceFromActivity \
+#           "org.kde.plasma.favorites.applications" \
+#           "applications:$fav" \
+#           ":global"
+#       done
 
-      new_favorites="preferred://browser,org.kde.kontact.desktop,systemsettings.desktop,org.kde.dolphin.desktop,org.kde.kwrite.desktop,org.kde.konsole.desktop,org.kde.discover.desktop"
+#       new_favorites="preferred://browser,org.kde.kontact.desktop,systemsettings.desktop,org.kde.dolphin.desktop,org.kde.kwrite.desktop,org.kde.konsole.desktop,org.kde.discover.desktop"
 
-      echo "$new_favorites" | tr ',' '\n' | while read -r fav; do
-        qdbus-qt6 org.kde.ActivityManager /ActivityManager/Resources/Linking \
-          org.kde.ActivityManager.ResourcesLinking.LinkResourceToActivity \
-          "org.kde.plasma.favorites.applications" \
-          "applications:$fav" \
-          ":global"
-      done
-    dest: /usr/bin/heliumos-plasma-favorites-set-defaults
-    mode: "0755"
+#       echo "$new_favorites" | tr ',' '\n' | while read -r fav; do
+#         qdbus-qt6 org.kde.ActivityManager /ActivityManager/Resources/Linking \
+#           org.kde.ActivityManager.ResourcesLinking.LinkResourceToActivity \
+#           "org.kde.plasma.favorites.applications" \
+#           "applications:$fav" \
+#           ":global"
+#       done
+#     dest: /usr/bin/heliumos-plasma-favorites-set-defaults
+#     mode: "0755"
 
-- name: Install sqlite
-  ansible.builtin.dnf:
-    name:
-      - sqlite
-    state: present
+# - name: Install sqlite
+#   ansible.builtin.dnf:
+#     name:
+#       - sqlite
+#     state: present
 
-- name: Create Plasma favorites defaults service for HeliumOS
-  ansible.builtin.copy:
-    content: |
-      [Unit]
-      Description=Set default Plasma favorites service for HeliumOS
-      ConditionPathExists=!%s/.local/state/heliumos-plasma-favorites-set-defaults
-      Requires=plasma-kactivitymanagerd.service
-      After=plasma-workspace.target
+# - name: Create Plasma favorites defaults service for HeliumOS
+#   ansible.builtin.copy:
+#     content: |
+#       [Unit]
+#       Description=Set default Plasma favorites service for HeliumOS
+#       ConditionPathExists=!%s/.local/state/heliumos-plasma-favorites-set-defaults
+#       Requires=plasma-kactivitymanagerd.service
+#       After=plasma-workspace.target
 
-      [Service]
-      Type=oneshot
-      ExecStart=/usr/bin/bash -c '/usr/bin/heliumos-plasma-favorites-set-defaults && touch $HOME/.local/state/heliumos-plasma-favorites-set-defaults'
-    dest: /usr/lib/systemd/user/heliumos-plasma-favorites-set-defaults.service
+#       [Service]
+#       Type=oneshot
+#       ExecStart=/usr/bin/bash -c '/usr/bin/heliumos-plasma-favorites-set-defaults && touch $HOME/.local/state/heliumos-plasma-favorites-set-defaults'
+#     dest: /usr/lib/systemd/user/heliumos-plasma-favorites-set-defaults.service
 
-- name: Enable Plasma favorites defaults service for HeliumOs
-  ansible.builtin.file:
-    src: /usr/lib/systemd/user/heliumos-plasma-favorites-set-defaults.service
-    dest: /etc/systemd/user/plasma-workspace.target.wants/heliumos-plasma-favorites-set-defaults.service
-    state: link
+# - name: Enable Plasma favorites defaults service for HeliumOs
+#   ansible.builtin.file:
+#     src: /usr/lib/systemd/user/heliumos-plasma-favorites-set-defaults.service
+#     dest: /etc/systemd/user/plasma-workspace.target.wants/heliumos-plasma-favorites-set-defaults.service
+#     state: link
 
 - name: Install Plymouth Spinner Theme
   ansible.builtin.dnf:
@@ -99,11 +99,11 @@
       - plymouth-theme-spinner
     state: present
 
-- name: Set default plymouth theme
-  ansible.builtin.copy:
-    content: |
-      [Daemon]
-      Theme=spinner
-      ShowDelay=0
-      DeviceTimeout=8
-    dest: /etc/plymouth/plymouthd.conf
+# - name: Set default plymouth theme
+#   ansible.builtin.copy:
+#     content: |
+#       [Daemon]
+#       Theme=spinner
+#       ShowDelay=0
+#       DeviceTimeout=8
+#     dest: /etc/plymouth/plymouthd.conf
