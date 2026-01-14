@@ -4,3 +4,9 @@
       - "@development"
       - distrobox
     state: present
+
+- name: Install Development Libraries
+  ansible.builtin.dnf:
+    name:
+      - gmp-devel
+    state: present
