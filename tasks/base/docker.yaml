@@ -1,11 +1,15 @@
-- name: Install Docker Engine
+- name: Install Docker dnf repository
+  shell:
+    cmd: |
+      dnf config-manager \
+        --add-repo=https://download.docker.com/linux/rhel/docker-ce.repo
+
+- name: Install Docker
   ansible.builtin.dnf:
     name:
-      - https://download.docker.com/linux/rhel/9/x86_64/stable/Packages/containerd.io-1.7.27-3.1.el9.x86_64.rpm
-      - https://download.docker.com/linux/rhel/9/x86_64/stable/Packages/docker-buildx-plugin-0.25.0-1.el9.x86_64.rpm
-      - https://download.docker.com/linux/rhel/9/x86_64/stable/Packages/docker-ce-28.3.0-1.el9.x86_64.rpm
-      - https://download.docker.com/linux/rhel/9/x86_64/stable/Packages/docker-ce-cli-28.3.0-1.el9.x86_64.rpm
-      - https://download.docker.com/linux/rhel/9/x86_64/stable/Packages/docker-ce-rootless-extras-28.3.0-1.el9.x86_64.rpm
-      - https://download.docker.com/linux/rhel/9/x86_64/stable/Packages/docker-compose-plugin-2.37.3-1.el9.x86_64.rpm
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-buildx-plugin
+      - docker-compose-plugin
     state: present
-    disable_gpg_check: true
