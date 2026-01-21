@@ -43,6 +43,7 @@ rechunk:
 		-v /var/lib/containers:/var/lib/containers \
         quay.io/almalinuxorg/almalinux-bootc:$(VERSION) \
         /usr/libexec/bootc-base-imagectl rechunk \
+            --max-layers 100 \
             $(IMAGE):$(TAG) \
             $(IMAGE):$(TAG)
 
