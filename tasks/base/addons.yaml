@@ -8,14 +8,14 @@
   ansible.builtin.systemd_service:
     name: heliumos-addons
     enabled: true
-
-- name: Libraries for Addons
-  ansible.builtin.dnf:
-    name: 
-      - https://dl.fedoraproject.org/pub/epel/10/Everything/x86_64/Packages/f/fakeroot-1.37-1.el10_0.x86_64.rpm
-      - https://dl.fedoraproject.org/pub/epel/10/Everything/x86_64/Packages/f/fakeroot-libs-1.37-1.el10_0.x86_64.rpm
-      - https://dl.fedoraproject.org/pub/epel/10/Everything/x86_64/Packages/p/pacman-7.0.0-5.el10_2.x86_64.rpm
-      - https://dl.fedoraproject.org/pub/epel/10/Everything/x86_64/Packages/p/pacman-filesystem-7.0.0-5.el10_2.noarch.rpm
-      - https://dl.fedoraproject.org/pub/epel/10/Everything/x86_64/Packages/l/libalpm-7.0.0-5.el10_2.x86_64.rpm
-    state: present
-    disable_gpg_check: true
+    
+# - name: Libraries for Addons
+#   ansible.builtin.dnf:
+#     name:
+#       - https://dl.fedoraproject.org/pub/epel/10/Everything/x86_64/Packages/f/fakeroot-1.37-1.el10_0.x86_64.rpm
+#       - https://dl.fedoraproject.org/pub/epel/10/Everything/x86_64/Packages/f/fakeroot-libs-1.37-1.el10_0.x86_64.rpm
+#       - https://dl.fedoraproject.org/pub/epel/10/Everything/x86_64/Packages/p/pacman-7.0.0-5.el10_2.x86_64.rpm
+#       - https://dl.fedoraproject.org/pub/epel/10/Everything/x86_64/Packages/p/pacman-filesystem-7.0.0-5.el10_2.noarch.rpm
+#       - https://dl.fedoraproject.org/pub/epel/10/Everything/x86_64/Packages/l/libalpm-7.0.0-5.el10_2.x86_64.rpm
+#     state: present
+#     disable_gpg_check: true
