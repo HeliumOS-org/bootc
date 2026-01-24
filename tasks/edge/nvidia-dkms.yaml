@@ -9,9 +9,8 @@
     nobest: true
     name:
       - dkms-nvidia
-      - nvidia-driver
+      - nvidia-driver-3:590.44.01-1.el10
       - nvidia-driver-cuda
-      - https://developer.download.nvidia.com/compute/cuda/repos/rhel10/x86_64/nvidia-persistenced-590.44.01-1.el10.x86_64.rpm
     state: present
 
 - name: Blacklist Nouveau drivers
