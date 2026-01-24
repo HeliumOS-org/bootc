@@ -9,8 +9,8 @@
     nobest: true
     name:
       - dkms-nvidia
-      - nvidia-driver-3:590.44.01-1.el10
-      - nvidia-driver-cuda-3:590.44.01-1.el10
+      - nvidia-driver
+      # - nvidia-driver-cuda
     state: present
 
 - name: Blacklist Nouveau drivers
