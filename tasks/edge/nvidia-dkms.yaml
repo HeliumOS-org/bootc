@@ -11,6 +11,7 @@
       - dkms-nvidia
       - nvidia-driver
       - nvidia-driver-cuda
+      - nvidia-persistenced
     state: present
 
 - name: Blacklist Nouveau drivers
