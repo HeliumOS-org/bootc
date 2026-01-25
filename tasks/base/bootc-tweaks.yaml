@@ -4,11 +4,26 @@
     regexp: "bootc upgrade --apply"
     replace: "bootc upgrade"
 
-- name: Set /opt mutable
-  shell:
-    cmd: |
-      mv /opt /var/opt
-      ln -s /var/opt /opt
+- name: Add /opt mount
+  ansible.builtin.copy:
+    content: |
+      [Unit]
+      Description=Mount /opt
+
+      [Mount]
+      What=/var/opt
+      Where=/opt
+      Type=none
+      Options=bind
+
+      [Install]
+      WantedBy=multi-user.target
+    dest: /usr/lib/systemd/system/var_opt.mount
+
+- name: Enable /opt mount
+  ansible.builtin.systemd_service:
+    name: var_opt.mount
+    enabled: true
 
 - name: Reboot on Kernel Panic
   ansible.builtin.copy:
