@@ -46,6 +46,11 @@
     name: usr-local.mount
     enabled: true
 
+- name: Create /nix directory
+  ansible.builtin.file:
+    path: /nix
+    state: directory
+
 - name: Add /nix mount
   ansible.builtin.copy:
     content: |
