@@ -25,6 +25,27 @@
     name: opt.mount
     enabled: true
 
+- name: Add /usr/local mount
+  ansible.builtin.copy:
+    content: |
+      [Unit]
+      Description=Mount /usr/local
+
+      [Mount]
+      What=/var/usrlocal
+      Where=/usr/local
+      Type=none
+      Options=bind
+
+      [Install]
+      WantedBy=multi-user.target
+    dest: /usr/lib/systemd/system/usrlocal.mount
+
+- name: Enable /usr/local mount
+  ansible.builtin.systemd_service:
+    name: usrlocal.mount
+    enabled: true
+
 - name: Reboot on Kernel Panic
   ansible.builtin.copy:
     content: |
