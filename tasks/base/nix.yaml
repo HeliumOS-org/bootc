@@ -24,6 +24,11 @@
     name: nix.mount
     enabled: true
 
+- name: Create /etc/nix directory
+  ansible.builtin.file:
+    path: /etc/nix
+    state: directory
+
 - name: Add default nix.conf
   ansible.builtin.copy:
     content: |
