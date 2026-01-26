@@ -39,11 +39,11 @@
 
       [Install]
       WantedBy=multi-user.target
-    dest: /usr/lib/systemd/system/usrlocal.mount
+    dest: /usr/lib/systemd/system/usr-local.mount
 
 - name: Enable /usr/local mount
   ansible.builtin.systemd_service:
-    name: usrlocal.mount
+    name: usr-local.mount
     enabled: true
 
 - name: Add /nix mount
