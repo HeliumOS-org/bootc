@@ -1,0 +1,40 @@
+- name: Create /nix directory
+  ansible.builtin.file:
+    path: /nix
+    state: directory
+
+- name: Add /nix mount
+  ansible.builtin.copy:
+    content: |
+      [Unit]
+      Description=Mount /nix
+
+      [Mount]
+      What=/var/nix
+      Where=/nix
+      Type=none
+      Options=bind
+
+      [Install]
+      WantedBy=multi-user.target
+    dest: /usr/lib/systemd/system/nix.mount
+
+- name: Enable /nix mount
+  ansible.builtin.systemd_service:
+    name: nix.mount
+    enabled: true
+
+- name: Add default nix.conf
+  ansible.builtin.copy:
+    content: |
+      experimental-features = nix-command flakes
+    dest: /etc/nix/nix.conf
+
+- name: Add script to setup Nix
+  ansible.builtin.copy:
+    content: |
+      #!/usr/bin/env bash
+      sudo chown -R ${USER} /nix
+      sh <(curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install) --no-daemon
+    mode: "775"
+    dest: /usr/bin/setup-nix.sh

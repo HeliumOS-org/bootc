@@ -46,32 +46,6 @@
     name: usr-local.mount
     enabled: true
 
-- name: Create /nix directory
-  ansible.builtin.file:
-    path: /nix
-    state: directory
-
-- name: Add /nix mount
-  ansible.builtin.copy:
-    content: |
-      [Unit]
-      Description=Mount /nix
-
-      [Mount]
-      What=/var/nix
-      Where=/nix
-      Type=none
-      Options=bind
-
-      [Install]
-      WantedBy=multi-user.target
-    dest: /usr/lib/systemd/system/nix.mount
-
-- name: Enable /nix mount
-  ansible.builtin.systemd_service:
-    name: nix.mount
-    enabled: true
-
 - name: Reboot on Kernel Panic
   ansible.builtin.copy:
     content: |
