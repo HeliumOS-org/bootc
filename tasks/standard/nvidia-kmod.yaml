@@ -4,13 +4,6 @@
       - almalinux-release-nvidia-driver
     state: present
 
-- name: Use major-stable NVIDIA dnf repository
-  shell:
-    cmd: |
-      sed -i \
-        's,rhel$releasever,rhel10,g' \
-        /etc/yum.repos.d/nvidia-cuda.repo
-
 - name: Install NVIDIA kmod drivers
   ansible.builtin.dnf:
     name:
