@@ -38,14 +38,15 @@
       - krfb
 
 - name: Enable SDDM
-  ansible.builtin.systemd_service:
-    name: sddm
-    enabled: true
+  ansible.builtin.file:
+    src: /usr/lib/systemd/system/sddm.service
+    dest: /etc/systemd/system/multi-user.target.wants/sddm.service
+    state: link
 
 - name: Disable Cockpit
-  ansible.builtin.systemd_service:
-    name: cockpit.socket
-    enabled: false
+  ansible.builtin.file:
+    path: /etc/systemd/system/sockets.target.wants/cockpit.socket
+    state: absent
 
 - name: Create script for /usr/share/sddm/themes overlay
   ansible.builtin.copy:

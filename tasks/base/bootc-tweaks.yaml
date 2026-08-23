@@ -21,9 +21,10 @@
     dest: /usr/lib/systemd/system/opt.mount
 
 - name: Enable /opt mount
-  ansible.builtin.systemd_service:
-    name: opt.mount
-    enabled: true
+  ansible.builtin.file:
+    src: /usr/lib/systemd/system/opt.mount
+    dest: /etc/systemd/system/multi-user.target.wants/opt.mount
+    state: link
 
 - name: Add /usr/local mount
   ansible.builtin.copy:
@@ -42,9 +43,10 @@
     dest: /usr/lib/systemd/system/usr-local.mount
 
 - name: Enable /usr/local mount
-  ansible.builtin.systemd_service:
-    name: usr-local.mount
-    enabled: true
+  ansible.builtin.file:
+    src: /usr/lib/systemd/system/usr-local.mount
+    dest: /etc/systemd/system/multi-user.target.wants/usr-local.mount
+    state: link
 
 - name: Reboot on Kernel Panic
   ansible.builtin.copy:
