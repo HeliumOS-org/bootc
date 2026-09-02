@@ -42,6 +42,7 @@
     src: /usr/lib/systemd/system/sddm.service
     dest: /etc/systemd/system/multi-user.target.wants/sddm.service
     state: link
+    force: true
 
 - name: Disable Cockpit
   ansible.builtin.file:
