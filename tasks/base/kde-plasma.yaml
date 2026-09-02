@@ -2,6 +2,7 @@
   ansible.builtin.dnf:
     name:
       - "@kde-desktop-environment"
+      - sddm-breeze
       - qt6-qtlocation
       - angelfish
       - kcalc
